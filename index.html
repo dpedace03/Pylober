@@ -108,10 +108,28 @@ main{
   background:var(--card-inicio);border-radius:var(--radius);box-shadow:var(--shadow);
   padding:20px 18px 18px;margin-bottom:18px;
 }
-.journey .jhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.journey .jhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
 .journey .day-count{font-family:var(--font-display);font-size:22px;font-weight:600}
 .journey .day-count b{color:var(--primary)}
 .journey .pct{font-size:14px;color:var(--ink-soft);font-weight:600}
+
+/* BARRA DE PROGRESO POTENTE */
+.progress-bar-wrap{
+  width:100%;
+  height:10px;
+  background:var(--line);
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.progress-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--primary) 0%, var(--primary-strong) 100%);
+  width:0%;
+  border-radius:999px;
+  transition:width .4s ease;
+}
+
 .trail{display:flex;gap:6px;align-items:center}
 .dot{flex:1;height:12px;border-radius:999px;background:var(--line);transition:background .3s ease}
 .dot.done{background:var(--primary)}
@@ -201,6 +219,11 @@ main{
   border:1px solid #f2d5ac;border-radius:var(--radius-sm);padding:14px 16px;
   margin-bottom:18px;font-size:15px;color:#7a4a12;box-shadow:var(--shadow);
 }
+.banner.danger-banner{
+  background:#fde8e8;
+  border-color:#f5c6c6;
+  color:#9b1c1c;
+}
 .banner .ico{font-size:22px;line-height:1}
 
 .btn{
@@ -221,6 +244,20 @@ main{
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
 .panel h2{font-family:var(--font-display);font-weight:500;font-size:21px;margin-bottom:6px}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
+
+/* REGLAS DE ORO CHECKLIST */
+.gold-rules{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.gold-rule-item{display:flex;align-items:center;gap:10px;background:var(--surface-2);padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line)}
+.gold-rule-item span.ico{font-size:20px}
+.gold-rule-item span.txt{font-size:14px;font-weight:600;color:var(--ink)}
+
+/* REGISTRO SÍNTOMAS / TOLERANCIA */
+.tolerance-options{display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:8px}
+.tolerance-btn{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:10px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;text-align:center;
+}
+.tolerance-btn.selected{background:var(--primary-tint);border-color:var(--primary);color:var(--primary-strong)}
 
 .times-grid{
   display:grid;
@@ -273,13 +310,13 @@ main{
 .disclaimer p{font-size:15px;line-height:1.5}
 .disclaimer strong{color:#fff}
 
-.done-wrap{text-align:center;padding:30px 10px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
+.done-wrap{text-align:center;padding:30px 16px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
 .done-badge{width:110px;height:110px;margin:0 auto 22px;border-radius:50%;background:var(--primary-tint);display:grid;place-items:center;animation:pop .6s cubic-bezier(.2,.8,.2,1.2) both}
 .done-badge svg{width:56px;height:56px;stroke:var(--primary);stroke-width:2.5;fill:none;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .7s .3s ease forwards}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes draw{to{stroke-dashoffset:0}}
-.done-wrap h2{font-family:var(--font-display);font-weight:500;font-size:30px;margin-bottom:10px}
-.done-wrap p{color:var(--ink-soft);font-size:17px;max-width:340px;margin:0 auto 8px}
+.done-wrap h2{font-family:var(--font-display);font-weight:500;font-size:28px;margin-bottom:10px}
+.done-wrap p{color:var(--ink-soft);font-size:16px;max-width:380px;margin:0 auto 12px}
 
 /* BARRA INFERIOR REDONDEADA */
 nav.tabs{
@@ -424,6 +461,10 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
             <div class="day-count">Día <b id="dayNum">1</b> de 10</div>
             <div class="pct" id="overallPct">0%</div>
           </div>
+          <!-- Barra de progreso visual llena -->
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
           <div class="trail" id="trail"></div>
           <div class="trail-labels"><span>Inicio</span><span>Fin</span></div>
         </div>
@@ -434,18 +475,48 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <div class="reg-card"><div class="n">10</div><div class="l">días de<br>tratamiento</div></div>
         </div>
 
+        <!-- Banner dinamico para flaqueza o tomas atrasadas -->
         <div id="missedBanner"></div>
+
+        <!-- REGLAS DE ORO DEL TRATAMIENTO -->
+        <div class="panel acc">
+          <h2 class="acc-head">✨ Reglas de Oro del tratamiento<span class="acc-ind"></span></h2>
+          <div class="gold-rules">
+            <div class="gold-rule-item"><span class="ico">🍲</span><span class="txt">Ingerir las cápsulas siempre con alimentos</span></div>
+            <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
+            <div class="gold-rule-item"><span class="ico">🚫🥛</span><span class="txt">Evitar lácteos junto con la toma de Pylober</span></div>
+            <div class="gold-rule-item"><span class="ico">🚫🍷</span><span class="txt">No consumir bebidas alcohólicas</span></div>
+          </div>
+        </div>
 
         <div class="section-title">Tomas de hoy</div>
         <div id="doseList"></div>
+
+        <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS -->
+        <div class="panel acc" style="margin-top:16px">
+          <h2 class="acc-head">🩺 Registro de tolerancia de hoy<span class="acc-ind"></span></h2>
+          <p class="hint">Elegí cómo te sentís hoy para llevar un seguimiento:</p>
+          <div class="tolerance-options" id="toleranceBtns">
+            <button class="tolerance-btn" data-val="bien">😊 Me siento bien</button>
+            <button class="tolerance-btn" data-val="molestia">🤢 Leve molestia</button>
+            <button class="tolerance-btn" data-val="oscura">💩 Heces oscuras</button>
+            <button class="tolerance-btn" data-val="metal">👅 Sabor metálico</button>
+          </div>
+          <div id="toleranceTip" style="margin-top:10px;font-size:13px;color:var(--ink-soft);"></div>
+        </div>
       </div>
 
       <div id="hoy-done" style="display:none">
         <div class="done-wrap">
           <div class="done-badge"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
-          <h2>¡Tratamiento completo!</h2>
-          <p>Completaste tus 10 días con Pylober. Gracias por el compromiso con tu cuidado. 🌿</p>
-          <p style="margin-top:16px">Recordá que ante cualquier duda sobre tu salud, tu médico es siempre la mejor referencia.</p>
+          <h2>¡Completaste el tratamiento! 💪</h2>
+          <p>Superaste los 10 días de Pylober sin interrumpir. ¡Felicitaciones por cuidar tu salud!</p>
+          
+          <div class="panel" style="text-align:left;margin-top:20px;background:var(--card-info);">
+            <h2 style="font-size:18px;">🗓️ Próximo paso: Test de control</h2>
+            <p class="hint" style="margin-bottom:10px;">Para confirmar la eliminación completa de la bacteria, se recomienda realizar un test de control a las 4 semanas.</p>
+            <button class="btn btn-primary" id="addControlReminderBtn" style="min-height:44px;font-size:15px;">Agendar recordatorio en 4 semanas</button>
+          </div>
         </div>
       </div>
     </section>
@@ -717,6 +788,7 @@ function boot(){
     if(!state.doseBtnColor) state.doseBtnColor = DEFAULT_DOSE_BTN_BG;
     if(!state.tabBarColor) state.tabBarColor = DEFAULT_TAB_BAR_BG;
     if(!state.topbarColor) state.topbarColor = DEFAULT_TOPBAR_BG;
+    if(!state.tolerance) state.tolerance = {};
   }
   applyColors();
   if(state && state.startDate){
@@ -764,6 +836,7 @@ document.getElementById('startBtn').addEventListener('click', ()=>{
     doseBtnColor: DEFAULT_DOSE_BTN_BG,
     tabBarColor: DEFAULT_TAB_BAR_BG,
     topbarColor: DEFAULT_TOPBAR_BG,
+    tolerance:{},
     taken 
   };
   saveState();
@@ -797,7 +870,12 @@ function renderHoy(){
 
   let marcadas=0;
   for(let d=1; d<=TOTAL_DIAS; d++) marcadas += state.taken[d].filter(Boolean).length;
-  document.getElementById('overallPct').textContent = Math.round(marcadas/(TOTAL_DIAS*TOMAS_POR_DIA)*100)+'%';
+  const pctVal = Math.round(marcadas/(TOTAL_DIAS*TOMAS_POR_DIA)*100);
+  document.getElementById('overallPct').textContent = pctVal+'%';
+  
+  // Actualizar barra visual llena
+  const pBar = document.getElementById('progressBar');
+  if(pBar) pBar.style.width = pctVal + '%';
 
   const list=document.getElementById('doseList'); list.innerHTML='';
   const now=new Date(); const nowMin=now.getHours()*60+now.getMinutes();
@@ -850,11 +928,70 @@ function renderHoy(){
     });
   });
 
+  // DETECCIÓN DE FLAQUEZA Y TOMAS ATRASADAS (IDEAS 1 Y 5)
   const missedWrap=document.getElementById('missedBanner');
+  let unmarKedCount = 0;
+  for(let d=1; d<=day; d++){
+    const maxSlot = (d === day) ? nextIdx : TOMAS_POR_DIA;
+    for(let s=0; s<(maxSlot === -1 ? TOMAS_POR_DIA : maxSlot); s++){
+      if(!state.taken[d][s]) unmarKedCount++;
+    }
+  }
+
   const atrasadas=state.times.filter((t,i)=>{const [hh,mm]=t.split(':').map(Number); return !takenToday[i] && (hh*60+mm)<nowMin;}).length;
-  missedWrap.innerHTML = atrasadas>0
-    ? `<div class="banner"><span class="ico">⏰</span><div>Tenés ${atrasadas} ${atrasadas===1?'toma pendiente':'tomas pendientes'} de hoy. Si ya la tomaste, marcala.</div></div>` : '';
+  
+  if(unmarKedCount >= 3){
+    missedWrap.innerHTML = `
+      <div class="banner danger-banner">
+        <span class="ico">💡</span>
+        <div>
+          <strong>¿Te cuesta seguir las tomas?</strong><br>
+          Es normal sentir cansancio o molestias, pero abandonar a la mitad permite que la bacteria <i>H. pylori</i> se vuelva resistente. ¡Completar los 10 días es la clave!
+        </div>
+      </div>`;
+  } else if(atrasadas>0) {
+    missedWrap.innerHTML = `<div class="banner"><span class="ico">⏰</span><div>Tenés ${atrasadas} ${atrasadas===1?'toma pendiente':'tomas pendientes'} de hoy. Si ya la tomaste, marcala.</div></div>`;
+  } else {
+    missedWrap.innerHTML = '';
+  }
+
+  // RENDER REGISTRO DE TOLERANCIA DE HOY
+  renderToleranceUI(day);
 }
+
+function renderToleranceUI(day){
+  const btns = document.querySelectorAll('.tolerance-btn');
+  const tip = document.getElementById('toleranceTip');
+  const currentVal = state.tolerance ? state.tolerance[day] : null;
+
+  btns.forEach(b=>{
+    b.classList.toggle('selected', b.dataset.val === currentVal);
+    b.onclick = ()=>{
+      const val = b.dataset.val;
+      if(!state.tolerance) state.tolerance = {};
+      state.tolerance[day] = val;
+      saveState();
+      renderToleranceUI(day);
+    };
+  });
+
+  if(currentVal === 'oscura'){
+    tip.innerHTML = '<b>Nota:</b> El bismuto puede oscurecer temporalmente las heces y la lengua. Es un efecto totalmente esperable y normal durante los 10 días.';
+  } else if(currentVal === 'metal'){
+    tip.innerHTML = '<b>Nota:</b> El metronidazol suele producir un leve sabor metálico en la boca. Se normaliza al finalizar el tratamiento.';
+  } else if(currentVal === 'molestia'){
+    tip.innerHTML = '<b>Sugerencia:</b> Recordá tomar las cápsulas siempre acompañadas de alimentos para reducir las molestias estomacales.';
+  } else if(currentVal === 'bien'){
+    tip.innerHTML = '¡Excelente! Continuá respetando las 4 tomas diarias.';
+  } else {
+    tip.innerHTML = '';
+  }
+}
+
+// RECORDATORIO POST TRATAMIENTO EN CALENDARIO
+document.getElementById('addControlReminderBtn').addEventListener('click', ()=>{
+  openInfoModal('📅', 'Test de Control', 'Sugerimos agendar una consulta médica para dentro de 4 semanas a partir de hoy. Tu médico te indicará el test del aliento o de antígeno para confirmar la erradicación.');
+});
 
 function renderRecordatorios(){
   document.getElementById('bgPicker').value = state.bgColor || DEFAULT_BG;
