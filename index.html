@@ -478,17 +478,6 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <!-- Banner dinamico para flaqueza o tomas atrasadas -->
         <div id="missedBanner"></div>
 
-        <!-- REGLAS DE ORO DEL TRATAMIENTO -->
-        <div class="panel acc">
-          <h2 class="acc-head">✨ Reglas de Oro del tratamiento<span class="acc-ind"></span></h2>
-          <div class="gold-rules">
-            <div class="gold-rule-item"><span class="ico">🍲</span><span class="txt">Ingerir las cápsulas siempre con alimentos</span></div>
-            <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
-            <div class="gold-rule-item"><span class="ico">🚫🥛</span><span class="txt">Evitar lácteos junto con la toma de Pylober</span></div>
-            <div class="gold-rule-item"><span class="ico">🚫🍷</span><span class="txt">No consumir bebidas alcohólicas</span></div>
-          </div>
-        </div>
-
         <div class="section-title">Tomas de hoy</div>
         <div id="doseList"></div>
 
@@ -503,6 +492,17 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
             <button class="tolerance-btn" data-val="metal">👅 Sabor metálico</button>
           </div>
           <div id="toleranceTip" style="margin-top:10px;font-size:13px;color:var(--ink-soft);"></div>
+        </div>
+
+        <!-- REGLAS DE ORO DEL TRATAMIENTO (Ubicadas abajo del registro de tolerancia) -->
+        <div class="panel acc" style="margin-top:16px">
+          <h2 class="acc-head">✨ Reglas de Oro del tratamiento<span class="acc-ind"></span></h2>
+          <div class="gold-rules">
+            <div class="gold-rule-item"><span class="ico">🍲</span><span class="txt">Ingerir las cápsulas siempre con alimentos</span></div>
+            <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
+            <div class="gold-rule-item"><span class="ico">🚫🥛</span><span class="txt">Evitar lácteos junto con la toma de Pylober</span></div>
+            <div class="gold-rule-item"><span class="ico">🚫🍷</span><span class="txt">No consumir bebidas alcohólicas</span></div>
+          </div>
         </div>
       </div>
 
@@ -928,7 +928,7 @@ function renderHoy(){
     });
   });
 
-  // DETECCIÓN DE FLAQUEZA Y TOMAS ATRASADAS (IDEAS 1 Y 5)
+  // DETECCIÓN DE FLAQUEZA Y TOMAS ATRASADAS
   const missedWrap=document.getElementById('missedBanner');
   let unmarKedCount = 0;
   for(let d=1; d<=day; d++){
