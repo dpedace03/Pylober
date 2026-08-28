@@ -175,7 +175,7 @@ main{
 .dose .meta{flex:1;min-width:0}
 .panel.acc > .acc-head{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
 .panel.acc:not(.open) > .acc-head{margin-bottom:0}
-.panel.acc:not(.open) > :not(.acc-head){display:none}
+.panel.acc:not(.open) > :not(.acc-head){display:none !important}
 .acc-ind{flex:none;width:9px;height:9px;border-right:2px solid var(--ink-soft);border-bottom:2px solid var(--ink-soft);transform:rotate(45deg);transition:transform .2s}
 .panel.acc.open .acc-ind{transform:rotate(-135deg)}
 .dose .meta .name{font-weight:600;font-size:16px}
@@ -547,6 +547,13 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         </div>
       </div>
 
+      <div class="panel acc">
+        <h2 class="acc-head">Enlace al Vademécum<span class="acc-ind"></span></h2>
+        <p class="hint">Dirección web que se abre desde la sección Información. Por defecto apunta al producto en el sitio de Laboratorios Bernabó.</p>
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:4px">URL del Vademécum</label>
+        <input type="url" id="vademecumUrl" placeholder="https://..." style="width:100%;font-family:var(--font-body);font-size:14px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)">
+      </div>
+
       <div class="panel">
         <h2>Tratamiento</h2>
         <p class="hint" id="startInfo">Comenzado el —</p>
@@ -556,6 +563,11 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
     <!-- INFO -->
     <section class="view" id="view-info">
+      <div class="panel">
+        <h2>Vademécum</h2>
+        <p class="hint">Información profesional del producto, en el sitio de Laboratorios Bernabó.</p>
+        <button class="btn btn-primary" id="vademecumBtn" style="min-height:44px">Abrir Vademécum</button>
+      </div>
       <div class="section-title" style="margin-top:4px">Preguntas frecuentes</div>
       <div id="faqList"></div>
       <div class="disclaimer">
@@ -633,6 +645,7 @@ const DEFAULT_CARD_INFO = "#f1faf8";
 const DEFAULT_DOSE_BTN_BG = "#ffffff";
 const DEFAULT_TAB_BAR_BG = "#ffffff";
 const DEFAULT_TOPBAR_BG = "#ffffff";
+const DEFAULT_VADEMECUM = "https://laboratoriosbernabo.com/es/productos/pylober/";
 const SNOOZE_MIN     = 10;
 const TOMA_LABELS = [
   {n:"Desayuno", e:"☕", extraYellow: true},
@@ -696,6 +709,7 @@ function boot(){
     if(state.waNumber===undefined) state.waNumber=''; 
     if(state.followup===undefined) state.followup=false; 
     if(!state.followupMin) state.followupMin=FOLLOWUP_MIN_DEFAULT; 
+    if(!state.vademecumUrl) state.vademecumUrl=DEFAULT_VADEMECUM; 
     if(!state.bgColor) state.bgColor = DEFAULT_BG;
     if(!state.cardColor) state.cardColor = DEFAULT_SURFACE;
     if(!state.inicioColor) state.inicioColor = DEFAULT_CARD_INICIO;
@@ -742,6 +756,7 @@ document.getElementById('startBtn').addEventListener('click', ()=>{
     waNumber:'', 
     followup:false, 
     followupMin:FOLLOWUP_MIN_DEFAULT, 
+    vademecumUrl: DEFAULT_VADEMECUM, 
     bgColor: DEFAULT_BG,
     cardColor: DEFAULT_SURFACE,
     inicioColor: DEFAULT_CARD_INICIO,
@@ -876,6 +891,7 @@ function renderRecordatorios(){
   document.getElementById('waState').textContent = state.waEnabled ? 'Activado' : 'Desactivado';
   document.getElementById('waConfig').style.display = state.waEnabled ? 'block' : 'none';
   document.getElementById('waNumber').value = state.waNumber||'';
+  { const _v=document.getElementById('vademecumUrl'); if(_v) _v.value = state.vademecumUrl||DEFAULT_VADEMECUM; }
 
   document.getElementById('startInfo').textContent = 'Comenzado el '+fmtDate(state.startDate);
 }
@@ -886,6 +902,12 @@ document.getElementById('topbarPicker').addEventListener('input', (e)=>{ state.t
   document.querySelectorAll('.panel.acc > .acc-head').forEach(function(h){
     h.addEventListener('click', function(){ h.parentElement.classList.toggle('open'); });
   });
+})();
+(function initVademecum(){
+  var inp=document.getElementById('vademecumUrl');
+  if(inp) inp.addEventListener('input',function(e){ state.vademecumUrl=e.target.value; saveState(); });
+  var btn=document.getElementById('vademecumBtn');
+  if(btn) btn.addEventListener('click',function(){ var u=(state.vademecumUrl||DEFAULT_VADEMECUM).trim(); if(u) window.open(u,'_blank'); });
 })();
 document.getElementById('cardPicker').addEventListener('input', (e)=>{ state.cardColor = e.target.value; applyColors(); saveState(); });
 document.getElementById('inicioPicker').addEventListener('input', (e)=>{ state.inicioColor = e.target.value; applyColors(); saveState(); });
