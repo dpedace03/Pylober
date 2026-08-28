@@ -173,6 +173,11 @@ main{
 }
 
 .dose .meta{flex:1;min-width:0}
+.panel.acc > .acc-head{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
+.panel.acc:not(.open) > .acc-head{margin-bottom:0}
+.panel.acc:not(.open) > :not(.acc-head){display:none}
+.acc-ind{flex:none;width:9px;height:9px;border-right:2px solid var(--ink-soft);border-bottom:2px solid var(--ink-soft);transform:rotate(45deg);transition:transform .2s}
+.panel.acc.open .acc-ind{transform:rotate(-135deg)}
 .dose .meta .name{font-weight:600;font-size:16px}
 .dose .meta .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
 .dose .meta .badge{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
@@ -447,8 +452,8 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
     <!-- RECORDATORIOS -->
     <section class="view" id="view-recordatorios">
-      <div class="panel">
-        <h2>Personalizar Colores</h2>
+      <div class="panel acc">
+        <h2 class="acc-head">Personalizar Colores<span class="acc-ind"></span></h2>
         <p class="hint">Ajustá la apariencia de las pantallas según tu preferencia.</p>
         <div class="color-pickers">
           <div class="color-field">
@@ -483,8 +488,8 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <button class="btn btn-ghost" id="resetColorsBtn" style="min-height:42px;font-size:14px;margin-top:4px">Restablecer colores predeterminados</button>
       </div>
 
-      <div class="panel">
-        <h2>Recordatorios</h2>
+      <div class="panel acc">
+        <h2 class="acc-head">Recordatorios<span class="acc-ind"></span></h2>
         <p class="hint">Activá los avisos para recibir un recordatorio en el horario de cada toma.</p>
         <div class="switch-row">
           <span class="lbl">Aviso de toma
@@ -521,8 +526,8 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div class="times-grid" id="timesGrid"></div>
       </div>
 
-      <div class="panel">
-        <h2>Aviso por WhatsApp</h2>
+      <div class="panel acc">
+        <h2 class="acc-head">Aviso por WhatsApp<span class="acc-ind"></span></h2>
         <p class="hint">Además del aviso en el teléfono, podés enviar el recordatorio por WhatsApp a un número (el propio paciente, un familiar o cuidador).</p>
         <div class="switch-row">
           <span class="lbl">Enviar por WhatsApp
@@ -877,6 +882,11 @@ function renderRecordatorios(){
 
 document.getElementById('bgPicker').addEventListener('input', (e)=>{ state.bgColor = e.target.value; applyColors(); saveState(); });
 document.getElementById('topbarPicker').addEventListener('input', (e)=>{ state.topbarColor = e.target.value; applyColors(); saveState(); });
+(function initAccordion(){
+  document.querySelectorAll('.panel.acc > .acc-head').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentElement.classList.toggle('open'); });
+  });
+})();
 document.getElementById('cardPicker').addEventListener('input', (e)=>{ state.cardColor = e.target.value; applyColors(); saveState(); });
 document.getElementById('inicioPicker').addEventListener('input', (e)=>{ state.inicioColor = e.target.value; applyColors(); saveState(); });
 document.getElementById('infoPicker').addEventListener('input', (e)=>{ state.infoColor = e.target.value; applyColors(); saveState(); });
