@@ -221,6 +221,13 @@ nav.tabs button.active{color:var(--primary)}
 .bot-bubble b{color:var(--primary)}
 .bot-bubble p{margin:6px 0 0}
 .bot-disc{font-size:12px;color:var(--ink-soft);margin:8px 0 0}
+.doc-img{cursor:zoom-in}
+.imgzoom{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column}
+.imgzoom[hidden]{display:none}
+.iz-bar{display:flex;gap:8px;justify-content:flex-end;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 12px 10px}
+.iz-bar button{min-width:44px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:10px;padding:8px 14px;font-size:17px;font-weight:700;cursor:pointer}
+.iz-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:8px}
+.iz-scroll img{width:100%;height:auto;display:block}
 nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .overlay{
@@ -407,8 +414,8 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <p class="hint">Información del producto de Laboratorios Bernabó. No reemplaza la indicación de su médico.</p>
       </div>
       <div class="panel">
-        <h2>Consultá el prospecto</h2>
-        <p class="hint">Escribí tu pregunta. Respondo solo con la información del material de Pylober.</p>
+        <h2>Consultá sobre Pylober</h2>
+        <p class="hint">Escribí tu pregunta. Respondo con la información del prospecto y la literatura de Pylober.</p>
         <div class="bot-input">
           <input type="text" id="botQ" placeholder="Ej: ¿puedo tomar alcohol?">
           <button id="botAsk" type="button">Preguntar</button>
@@ -444,6 +451,16 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 <!-- MODAL genérico -->
 <div class="modal-scrim" id="modalScrim">
   <div class="modal" id="modalBox" role="dialog" aria-modal="true"></div>
+</div>
+
+<!-- VISOR con zoom -->
+<div class="imgzoom" id="imgZoom" hidden>
+  <div class="iz-bar">
+    <button id="izMinus" type="button" aria-label="Alejar">−</button>
+    <button id="izPlus" type="button" aria-label="Acercar">+</button>
+    <button id="izClose" type="button">Cerrar</button>
+  </div>
+  <div class="iz-scroll"><img id="izImg" src="" alt="Documento"></div>
 </div>
 
 <script>
@@ -932,8 +949,8 @@ const PROSPECTO_KB=[
    a:"Consultá a tu médico ante señales de alarma: pérdida de peso inexplicable, dificultad para tragar, anemia (fatiga o palidez), sangrado (vómito con sangre o heces negras), dolor abdominal severo y progresivo, vómitos persistentes o antecedentes familiares de cáncer gástrico."},
   {t:"Alergia a la penicilina", k:["alergia","penicilina","alergico"],
    a:"Pylober es una opción segura para pacientes alérgicos a la penicilina."},
-  {t:"Eficacia", k:["eficacia","funciona","resultados","resistentes","resistencia","fallo previo","erradicacion","efectivo","efectividad"],
-   a:"Pylober logra tasas de erradicación superiores al 90%, con cumplimiento superior al 95%. Es eficaz incluso en cepas resistentes y en casos donde otros tratamientos no funcionaron."},
+  {t:"Eficacia", k:["eficacia","funciona","resultados","resistent","resistencia","fallo previo","erradicacion","efectivo","efectividad","primera linea"],
+   a:"Pylober logra tasas de erradicación superiores al 90%, con cumplimiento superior al 95%. Es eficaz incluso en cepas resistentes y en casos donde otros tratamientos no funcionaron. Se recomienda como primera línea cuando la susceptibilidad a los antibióticos es desconocida."},
   {t:"Qué es el Helicobacter pylori", k:["que es helicobacter","que es pylori","contagio","prevalencia","cuanta gente"],
    a:"El Helicobacter pylori es la infección bacteriana crónica más frecuente; se estima que afecta a cerca del 50% de la población mundial (en Argentina, entre el 40% y el 49%)."},
   {t:"Olvidé una toma", k:["olvide","olvido","me salte","no tome","saltee","perdi una toma","me olvide"],
@@ -943,18 +960,35 @@ const PROSPECTO_KB=[
   {t:"Efectos adversos y contraindicaciones", k:["efectos","adversos","reacciones","secundarios","contraindicaciones","contraindicado","efecto adverso"],
    a:"El detalle de efectos adversos y contraindicaciones está en el prospecto completo (más abajo). Ante cualquier reacción, consultá a tu médico o farmacéutico."},
   {t:"Laboratorio y contacto", k:["laboratorio","bernabo","contacto","telefono","mail","email"],
-   a:"Pylober es de Laboratorios Bernabó S.A. Contacto: 0810-555-0111 · info@laboratoriosbernabo.com."}
+   a:"Pylober es de Laboratorios Bernabó S.A. Contacto: 0810-555-0111 · info@laboratoriosbernabo.com."},
+  {t:"Enfermedades asociadas al H. pylori", k:["impacto","enfermedades","que causa","que provoca","cancer","cancer gastrico","linfoma","malt","dispepsia","complicaciones","riesgos","que produce","asociadas"],
+   a:"La infección por Helicobacter pylori puede asociarse a: úlcera péptica, cáncer gástrico, linfoma MALT, dispepsia funcional, anemia ferropénica inexplicada, púrpura trombocitopénica idiopática, gastritis crónica activa y enfermedad ulcerosa asociada a AINEs."},
+  {t:"Ventajas de Pylober", k:["ventajas","beneficios","por que elegir","por que pylober","que tiene de bueno","por que conviene"],
+   a:"Eficacia comprobada (más del 90% de erradicación), tratamiento compacto de 10 días, opción segura para alérgicos a la penicilina, alta adherencia (más del 95%), eficaz tras fallos previos y eficaz incluso en cepas resistentes."},
+  {t:"Prevalencia del H. pylori", k:["prevalencia","cuanta gente","frecuente","comun","poblacion","argentina","mundo","estadistica"],
+   a:"El Helicobacter pylori es la infección bacteriana crónica más frecuente: se estima que afecta a cerca del 50% de la población mundial y, en Argentina, entre el 40% y el 49%."}
 ];
 function _norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 function botResponder(q){
   const ans=document.getElementById('botAns'); if(!ans) return;
   const nq=_norm(q);
   if(!nq.trim()){ ans.innerHTML=''; return; }
+  const STOP=' que cual cuales para con sin los las una uno por del como este esta estas estos tiene tienen puede pueden hay sobre mas muy pylober medicamento cuando donde cuanto pastilla pastillas ';
+  const sig=function(w){ return w.length>=3 && STOP.indexOf(' '+w+' ')<0; };
+  const qw=nq.split(/[^a-z0-9]+/).filter(sig);
   let best=null, bestScore=0;
-  PROSPECTO_KB.forEach(sec=>{ let sc=0; sec.k.forEach(kw=>{ if(nq.indexOf(_norm(kw))>=0) sc++; }); if(sc>bestScore){ bestScore=sc; best=sec; } });
+  PROSPECTO_KB.forEach(sec=>{
+    let sc=0;
+    sec.k.forEach(kw=>{
+      const nk=_norm(kw);
+      if(nq.indexOf(nk)>=0){ sc+=2; return; }
+      nk.split(/[^a-z0-9]+/).filter(sig).forEach(function(w){ if(qw.indexOf(w)>=0) sc+=1; });
+    });
+    if(sc>bestScore){ bestScore=sc; best=sec; }
+  });
   const disc='<p class="bot-disc">Respuesta orientativa. No reemplaza la indicación de tu médico.</p>';
   if(best && bestScore>0){ ans.innerHTML='<div class="bot-bubble"><b>'+best.t+'</b><p>'+best.a+'</p>'+disc+'</div>'; }
-  else { ans.innerHTML='<div class="bot-bubble">No encontré eso en el material del prospecto. Para esa consulta, lo mejor es ver el prospecto completo (más abajo) o preguntarle a tu médico o farmacéutico.'+disc+'</div>'; }
+  else { ans.innerHTML='<div class="bot-bubble">No encontré eso en el material de Pylober. Para esa consulta, lo mejor es ver el prospecto y la literatura (más abajo) o preguntarle a tu médico o farmacéutico.'+disc+'</div>'; }
 }
 (function initBot(){
   const chips=document.getElementById('botChips'), inp=document.getElementById('botQ'), ask=document.getElementById('botAsk');
@@ -964,6 +998,18 @@ function botResponder(q){
   chips.querySelectorAll('.bot-chip').forEach(b=>b.addEventListener('click',()=>{ inp.value=b.textContent; botResponder(b.textContent); }));
   ask.addEventListener('click',()=>botResponder(inp.value));
   inp.addEventListener('keydown',e=>{ if(e.key==='Enter') botResponder(inp.value); });
+})();
+(function initZoom(){
+  const ov=document.getElementById('imgZoom'), im=document.getElementById('izImg');
+  if(!ov||!im) return;
+  let z=1;
+  function setZ(v){ z=Math.max(1,Math.min(4,Math.round(v*10)/10)); im.style.width=(z*100)+'%'; }
+  function abrir(src){ im.src=src; setZ(1); const sc=ov.querySelector('.iz-scroll'); if(sc) sc.scrollTop=0; ov.hidden=false; }
+  document.querySelectorAll('.doc-img').forEach(function(img){ img.addEventListener('click',function(){ abrir(img.currentSrc||img.src); }); });
+  document.getElementById('izPlus').addEventListener('click',function(){ setZ(z+0.5); });
+  document.getElementById('izMinus').addEventListener('click',function(){ setZ(z-0.5); });
+  document.getElementById('izClose').addEventListener('click',function(){ ov.hidden=true; });
+  im.addEventListener('dblclick',function(){ setZ(z>1?1:2); });
 })();
 
 
