@@ -41,7 +41,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
+html,body{height:100%;overflow:hidden}
 body{
   font-family:var(--font-body);
   background:var(--bg);
@@ -57,11 +57,13 @@ body{
   max-width:520px;
   margin:0 auto;
   min-height:100%;
+  height:100%;
   display:flex;
   flex-direction:column;
   background:var(--bg);
   position:relative;
   padding:0 12px;
+  overflow-y:auto;
 }
 main{
   flex:1;
@@ -191,11 +193,32 @@ main{
 }
 
 .dose .meta{flex:1;min-width:0}
-.panel.acc > .acc-head{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
-.panel.acc:not(.open) > .acc-head{margin-bottom:0}
-.panel.acc:not(.open) > :not(.acc-head){display:none !important}
-.acc-ind{flex:none;width:9px;height:9px;border-right:2px solid var(--ink-soft);border-bottom:2px solid var(--ink-soft);transform:rotate(45deg);transition:transform .2s}
-.panel.acc.open .acc-ind{transform:rotate(-135deg)}
+
+/* ESTILOS DE ACORDEÓN / PANEL DESPLEGABLE CORREGIDOS */
+.panel.acc > .acc-head{
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  user-select:none;
+}
+.panel.acc:not(.open) > :not(.acc-head){
+  display:none !important;
+}
+.acc-ind{
+  flex:none;
+  width:9px;
+  height:9px;
+  border-right:2px solid var(--ink-soft);
+  border-bottom:2px solid var(--ink-soft);
+  transform:rotate(45deg);
+  transition:transform .2s;
+}
+.panel.acc.open .acc-ind{
+  transform:rotate(-135deg);
+}
+
 .dose .meta .name{font-weight:600;font-size:16px}
 .dose .meta .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
 .dose .meta .badge{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
@@ -242,7 +265,7 @@ main{
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
-.panel h2{font-family:var(--font-display);font-weight:500;font-size:21px;margin-bottom:6px}
+.panel h2{font-family:var(--font-display);font-weight:500;font-size:20px;margin:0}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
 
 /* REGLAS DE ORO CHECKLIST */
@@ -251,13 +274,14 @@ main{
 .gold-rule-item span.ico{font-size:20px}
 .gold-rule-item span.txt{font-size:14px;font-weight:600;color:var(--ink)}
 
-/* REGISTRO SÍNTOMAS / TOLERANCIA */
+/* REGISTRO SÍNTOMAS / TOLERANCIA MÚLTIPLE */
 .tolerance-options{display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:8px}
 .tolerance-btn{
   background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
   padding:10px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;text-align:center;
+  transition:all .18s ease;
 }
-.tolerance-btn.selected{background:var(--primary-tint);border-color:var(--primary);color:var(--primary-strong)}
+.tolerance-btn.selected{background:var(--primary-tint);border-color:var(--primary);color:var(--primary-strong);box-shadow:0 0 0 2px var(--primary)}
 
 .times-grid{
   display:grid;
@@ -275,7 +299,7 @@ main{
   width:100%;
   box-sizing:border-box;
 }
-.time-field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:4px}
+.time-field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
 .time-field input{border:none;background:transparent;font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--ink);width:100%}
 .time-field input:focus{outline:none}
 
@@ -305,9 +329,9 @@ main{
 .placeholder-note{background:var(--surface-2);border:1px dashed #c3d6cf;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--ink-soft);margin-top:8px}
 .placeholder-note b{color:var(--primary-strong)}
 
-.disclaimer{background:var(--primary-strong);color:#eaf5f1;border-radius:var(--radius);padding:18px;margin-top:8px;display:flex;gap:12px;align-items:flex-start}
-.disclaimer .ico{font-size:22px;line-height:1}
-.disclaimer p{font-size:15px;line-height:1.5}
+.disclaimer{background:var(--primary-strong);color:#eaf5f1;border-radius:var(--radius);padding:14px;margin-top:8px;display:flex;gap:10px;align-items:flex-start}
+.disclaimer .ico{font-size:20px;line-height:1}
+.disclaimer p{font-size:13px;line-height:1.4}
 .disclaimer strong{color:#fff}
 
 .done-wrap{text-align:center;padding:30px 16px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
@@ -387,25 +411,68 @@ nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
 .iz-scroll img{width:100%;height:auto;display:block}
 nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
+/* ONBOARDING PANTALLA INICIAL SIN SCROLL */
 .overlay{
   position:fixed;inset:0;z-index:50;background:var(--bg);
-  display:flex;flex-direction:column;justify-content:center;overflow-y:auto;
-  padding:calc(30px + env(safe-area-inset-top)) 24px calc(30px + env(safe-area-inset-bottom));
-  max-width:520px;margin:0 auto;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:calc(16px + env(safe-area-inset-top)) 20px calc(16px + env(safe-area-inset-bottom));
+  max-width:520px;margin:0 auto;height:100vh;box-sizing:border-box;
 }
 .overlay.hidden{display:none}
-@media (max-height:760px){.overlay{justify-content:flex-start}}
-.welcome-mark{width:84px;height:84px;border-radius:24px;background:var(--primary);display:grid;place-items:center;margin-bottom:24px;box-shadow:var(--shadow-lg)}
-.welcome-mark svg{width:44px;height:44px;stroke:#fff;stroke-width:2;fill:none}
-.brand-logo{width:72%;max-width:300px;height:auto;display:block;margin:0 0 18px}
-.overlay h1{font-family:var(--font-display);font-weight:500;font-size:34px;line-height:1.1;margin-bottom:12px;color:#ffffff}
-.overlay .lede{font-size:17px;color:#e1e9f0;margin-bottom:24px;line-height:1.5}
-.overlay .steps{list-style:none;margin-bottom:24px;background:var(--surface);border-radius:var(--radius);padding:8px 16px;box-shadow:var(--shadow)}
-.overlay .steps li{display:flex;gap:12px;align-items:center;padding:10px 0;font-size:16px}
-.overlay .steps .n{width:34px;height:34px;flex:none;border-radius:50%;background:var(--primary-tint);color:var(--primary-strong);font-weight:700;display:grid;place-items:center;font-size:15px}
+.brand-logo{width:60%;max-width:220px;height:auto;display:block;margin:0 auto 10px}
+.overlay h1{font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1.1;margin-bottom:6px;color:#ffffff;text-align:center}
+.overlay .lede{font-size:14px;color:#e1e9f0;margin-bottom:12px;line-height:1.3;text-align:center}
+.overlay .steps{list-style:none;margin-bottom:12px;background:var(--surface);border-radius:var(--radius);padding:4px 12px;box-shadow:var(--shadow)}
+.overlay .steps li{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px solid var(--surface-2)}
+.overlay .steps li:last-child{border-bottom:none}
+.overlay .steps .n{width:28px;height:28px;flex:none;border-radius:50%;background:var(--primary-tint);color:var(--primary-strong);font-weight:700;display:grid;place-items:center;font-size:13px}
+
+/* FLUJO CONFIGURACIÓN INICIAL (WIZARD ESTILO MODAL) */
+.wizard-overlay{
+  position:fixed;inset:0;z-index:150;background:rgba(21,48,42,.85);
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+}
+.wizard-overlay.show{display:flex;animation:fade .25s ease}
+.wizard-card{
+  background:var(--surface);border-radius:24px;max-width:460px;width:100%;
+  padding:22px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;
+  position:relative;max-height:90vh;overflow-y:auto;
+}
+.wizard-card h3{font-family:var(--font-display);font-weight:600;font-size:22px;margin-bottom:12px;color:var(--ink)}
+.wizard-card p{color:var(--ink-soft);font-size:15px;line-height:1.4;margin-bottom:16px}
+.wizard-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding-top:12px;border-top:1px solid var(--line)}
+.wizard-nav button{
+  min-width:48px;height:48px;border-radius:14px;border:none;background:var(--primary);
+  color:#fff;font-size:20px;font-weight:700;cursor:pointer;display:grid;place-items:center;
+}
+.wizard-nav button:disabled{opacity:0.3;cursor:not-allowed}
+.btn-save-sm{
+  background:var(--primary-strong);color:#fff;border:none;border-radius:10px;
+  padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;
+}
+
+/* BOTONES RESUMEN CELEBRACIÓN */
+.celebration-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.celebration-btn{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:12px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.celebration-btn.joy-btn{background:var(--amber-tint);border-color:var(--amber);color:#7a4a12}
+
+/* DESTACADOS WIZARD */
+.wiz-big-num{font-size:28px;font-weight:800;color:var(--primary-strong);margin-right:4px;}
+.wiz-large-title{font-size:26px;font-weight:700;color:var(--ink);text-align:center;margin-top:10px;line-height:1.2;}
+
+/* ANIMACIÓN FUEGOS ARTIFICIALES */
+.fireworks-box{
+  width:100%;height:130px;display:flex;align-items:center;justify-content:center;
+  font-size:68px;animation:bounce 1s infinite alternate ease-in-out;
+}
+@keyframes bounce{from{transform:scale(0.9) translateY(0)}to{transform:scale(1.1) translateY(-10px)}}
 
 .modal-scrim{
-  position:fixed;inset:0;z-index:60;background:rgba(21,48,42,.45);
+  position:fixed;inset:0;z-index:170;background:rgba(21,48,42,.45);
   display:none;align-items:flex-end;justify-content:center;
   padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));
 }
@@ -423,32 +490,46 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 </head>
 <body>
 
-<!-- ONBOARDING -->
+<!-- ONBOARDING INICIAL ENCAJADO EN PANTALLA -->
 <div class="overlay" id="welcome">
-  <img class="brand-logo" src="pylober-logo.png">
-  <h1>día a día</h1>
-  <p class="lede">Te acompañamos durante los 10 días con recordatorios en cada toma. Sin registros ni cuentas: empezás y listo.</p>
-  <ul class="steps">
-    <li><span class="n">1</span> 4 tomas por día, 3 pastillas cada una</li>
-    <li><span class="n">2</span> Te avisamos en el horario de cada toma</li>
-    <li><span class="n">3</span> Marcás lo que vas tomando</li>
-  </ul>
-  <div class="disclaimer" style="margin-bottom:22px">
-    <span class="ico">ℹ️</span>
-    <p><strong>Esta app no reemplaza la indicación de su médico.</strong> Ante cualquier duda, consultá con tu profesional de la salud.</p>
+  <div>
+    <img class="brand-logo" src="pylober-logo.png" alt="Pylober">
+    <h1>día a día</h1>
+    <p class="lede">Te acompañamos durante los 10 días con recordatorios en cada toma. Sin registros ni cuentas: empezás y listo.</p>
+    <ul class="steps">
+      <li><span class="n">1</span> 4 tomas por día, 3 pastillas cada una</li>
+      <li><span class="n">2</span> Te avisamos en el horario de cada toma</li>
+      <li><span class="n">3</span> Marcás lo que vas tomando</li>
+    </ul>
+    <div class="disclaimer">
+      <span class="ico">ℹ️</span>
+      <p><strong>Esta app no reemplaza la indicación de su médico.</strong> Ante cualquier duda, consultá con tu profesional de la salud.</p>
+    </div>
   </div>
-  <button class="btn btn-primary" id="startBtn">Comenzar el tratamiento</button>
+  <button class="btn btn-primary" id="startBtn" style="margin-top:10px;">Comenzar el tratamiento</button>
+</div>
+
+<!-- FLUJO CONFIGURACIÓN INICIAL (WIZARD DE 5 PASOS) -->
+<div class="wizard-overlay" id="wizardOverlay">
+  <div class="wizard-card">
+    <div id="wizardContent"></div>
+    <div class="wizard-nav">
+      <button id="wizPrev" aria-label="Anterior">←</button>
+      <span id="wizStepLabel" style="font-size:14px;font-weight:600;color:var(--ink-soft)">Paso 1 de 5</span>
+      <button id="wizNext" aria-label="Siguiente">→</button>
+    </div>
+  </div>
 </div>
 
 <!-- APP -->
 <div id="app" hidden>
-  <div class="topbar">
+  <div class="topbar" id="mainTopbar">
     <div>
       <div class="greet" id="greet">Hola</div>
       <h1 id="viewTitle">Hoy</h1>
     </div>
     <div class="logo-container">
-      <img class="product-logo" src="pylober-logo.png">
+      <img class="product-logo" src="pylober-logo.png" alt="Pylober">
     </div>
   </div>
 
@@ -481,10 +562,17 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div class="section-title">Tomas de hoy</div>
         <div id="doseList"></div>
 
-        <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS -->
+        <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS MÚLTIPLE -->
         <div class="panel acc" style="margin-top:16px">
-          <h2 class="acc-head">🩺 Registro de tolerancia de hoy<span class="acc-ind"></span></h2>
-          <p class="hint">Elegí cómo te sentís hoy para llevar un seguimiento:</p>
+          <div class="acc-head">
+            <h2>🩺 Registro de tolerancia de hoy</h2>
+            <span class="acc-ind"></span>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+            <button class="btn-save-sm" id="viewToleranceLogBtn" type="button" style="background:var(--surface-2);color:var(--primary-strong);border:1px solid var(--line);padding:4px 10px;font-size:12px;">👁️ Ver</button>
+            <button class="btn-save-sm" id="viewFullRegisterBtn" type="button" style="background:var(--surface-2);color:var(--primary-strong);border:1px solid var(--line);padding:4px 10px;font-size:12px;">📜 Registro</button>
+          </div>
+          <p class="hint" style="margin-top:10px;">Podés marcar una o varias opciones según te sientas hoy:</p>
           <div class="tolerance-options" id="toleranceBtns">
             <button class="tolerance-btn" data-val="bien">😊 Me siento bien</button>
             <button class="tolerance-btn" data-val="molestia">🤢 Leve molestia</button>
@@ -494,9 +582,12 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <div id="toleranceTip" style="margin-top:10px;font-size:13px;color:var(--ink-soft);"></div>
         </div>
 
-        <!-- REGLAS DE ORO DEL TRATAMIENTO (Ubicadas abajo del registro de tolerancia) -->
+        <!-- REGLAS DE ORO DEL TRATAMIENTO -->
         <div class="panel acc" style="margin-top:16px">
-          <h2 class="acc-head">✨ Reglas de Oro del tratamiento<span class="acc-ind"></span></h2>
+          <div class="acc-head">
+            <h2>✨ Reglas de Oro del tratamiento</h2>
+            <span class="acc-ind"></span>
+          </div>
           <div class="gold-rules">
             <div class="gold-rule-item"><span class="ico">🍲</span><span class="txt">Ingerir las cápsulas siempre con alimentos</span></div>
             <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
@@ -511,7 +602,14 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <div class="done-badge"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
           <h2>¡Completaste el tratamiento! 💪</h2>
           <p>Superaste los 10 días de Pylober sin interrumpir. ¡Felicitaciones por cuidar tu salud!</p>
-          
+
+          <div class="celebration-actions">
+            <button class="celebration-btn joy-btn" id="joySummaryBtn">🟡 Alegría</button>
+            <button class="celebration-btn" id="textSummaryBtn">✏️ Resumen</button>
+            <button class="celebration-btn" id="waSummaryBtn">💬 WhatsApp</button>
+            <button class="celebration-btn" id="calendarReminderBtn">🗓️ Agendar Test</button>
+          </div>
+
           <div class="panel" style="text-align:left;margin-top:20px;background:var(--card-info);">
             <h2 style="font-size:18px;">🗓️ Próximo paso: Test de control</h2>
             <p class="hint" style="margin-bottom:10px;">Para confirmar la eliminación completa de la bacteria, se recomienda realizar un test de control a las 4 semanas.</p>
@@ -524,8 +622,22 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
     <!-- RECORDATORIOS -->
     <section class="view" id="view-recordatorios">
       <div class="panel acc">
-        <h2 class="acc-head">Personalizar Colores<span class="acc-ind"></span></h2>
-        <p class="hint">Ajustá la apariencia de las pantallas según tu preferencia.</p>
+        <div class="acc-head">
+          <h2>Personalizar Colores</h2>
+          <span class="acc-ind"></span>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+          <button class="btn-save-sm" id="saveThemeBtn" type="button">💾 Guardar</button>
+        </div>
+        <p class="hint" style="margin-top:10px;">Ajustá la apariencia de las pantallas según tu preferencia o elegí un perfil guardado.</p>
+        
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px;">Cargar perfil guardado:</label>
+          <select id="savedThemesSelect" style="width:100%;padding:8px;border-radius:10px;border:1px solid var(--line);font-size:14px;background:var(--surface);">
+            <option value="">-- Mis temas guardados --</option>
+          </select>
+        </div>
+
         <div class="color-pickers">
           <div class="color-field">
             <label>Fondo de Pantalla</label>
@@ -560,8 +672,11 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       </div>
 
       <div class="panel acc">
-        <h2 class="acc-head">Recordatorios<span class="acc-ind"></span></h2>
-        <p class="hint">Activá los avisos para recibir un recordatorio en el horario de cada toma.</p>
+        <div class="acc-head">
+          <h2>Recordatorios</h2>
+          <span class="acc-ind"></span>
+        </div>
+        <p class="hint" style="margin-top:10px;">Activá los avisos para recibir un recordatorio en el horario de cada toma.</p>
         <div class="switch-row">
           <span class="lbl">Aviso de toma
             <small id="notifState">Desactivado</small>
@@ -598,8 +713,11 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       </div>
 
       <div class="panel acc">
-        <h2 class="acc-head">Aviso por WhatsApp<span class="acc-ind"></span></h2>
-        <p class="hint">Además del aviso en el teléfono, podés enviar el recordatorio por WhatsApp a un número (el propio paciente, un familiar o cuidador).</p>
+        <div class="acc-head">
+          <h2>Aviso por WhatsApp</h2>
+          <span class="acc-ind"></span>
+        </div>
+        <p class="hint" style="margin-top:10px;">Además del aviso en el teléfono, podés enviar el recordatorio por WhatsApp a un número (el propio paciente, un familiar o cuidador).</p>
         <div class="switch-row">
           <span class="lbl">Enviar por WhatsApp
             <small id="waState">Desactivado</small>
@@ -619,8 +737,11 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       </div>
 
       <div class="panel acc">
-        <h2 class="acc-head">Enlace al Vademécum<span class="acc-ind"></span></h2>
-        <p class="hint">Dirección web que se abre desde la sección Información. Por defecto apunta al producto en el sitio de Laboratorios Bernabó.</p>
+        <div class="acc-head">
+          <h2>Enlace al Vademécum</h2>
+          <span class="acc-ind"></span>
+        </div>
+        <p class="hint" style="margin-top:10px;">Dirección web que se abre desde la sección Información. Por defecto apunta al producto en el sitio de Laboratorios Bernabó.</p>
         <label style="display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:4px">URL del Vademécum</label>
         <input type="url" id="vademecumUrl" placeholder="https://..." style="width:100%;font-family:var(--font-body);font-size:14px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)">
       </div>
@@ -724,6 +845,12 @@ const TOMA_LABELS = [
   {n:"Merienda", e:"☕🥐", extraYellow: false},
   {n:"Cena", e:"🍴🌙", extraYellow: true}
 ];
+const TOLERANCE_MAP = {
+  bien: "😊 Bien",
+  molestia: "🤢 Leve molestia",
+  oscura: "💩 Heces oscuras",
+  metal: "👅 Sabor metálico"
+};
 const FOLLOWUP_MIN_DEFAULT = 15;
 
 /* ===== ENTORNO ===== */
@@ -747,6 +874,7 @@ function saveState(){ store.set(KEY, JSON.stringify(state)); }
 let state = loadState();
 
 let alerted = new Set();
+let currentWizStep = 1;
 
 /* ===== FECHAS ===== */
 const DAY_MS = 86400000;
@@ -773,6 +901,7 @@ function applyColors(){
 /* ===== ARRANQUE ===== */
 const welcome = document.getElementById('welcome');
 const app = document.getElementById('app');
+const topbar = document.getElementById('mainTopbar');
 
 function boot(){
   if(state){ 
@@ -789,11 +918,13 @@ function boot(){
     if(!state.tabBarColor) state.tabBarColor = DEFAULT_TAB_BAR_BG;
     if(!state.topbarColor) state.topbarColor = DEFAULT_TOPBAR_BG;
     if(!state.tolerance) state.tolerance = {};
+    if(!state.savedThemes) state.savedThemes = [];
   }
   applyColors();
   if(state && state.startDate){
     welcome.classList.add('hidden');
     app.hidden = false;
+    topbar.style.display = 'flex';
     renderAll();
     if(isNative){
       createChannelNative();
@@ -814,12 +945,15 @@ function boot(){
   }else{
     welcome.classList.remove('hidden');
     app.hidden = true;
+    topbar.style.display = 'none';
   }
 }
 
+// INICIAR FLUJO DE CONFIGURACIÓN
 document.getElementById('startBtn').addEventListener('click', ()=>{
   const taken = {};
   for(let d=1; d<=TOTAL_DIAS; d++) taken[d] = Array(TOMAS_POR_DIA).fill(false);
+  const preservedThemes = state?.savedThemes || [];
   state = { 
     startDate: startOfDay(new Date()).toISOString(), 
     times:[...HORARIOS_DEFAULT], 
@@ -837,11 +971,118 @@ document.getElementById('startBtn').addEventListener('click', ()=>{
     tabBarColor: DEFAULT_TAB_BAR_BG,
     topbarColor: DEFAULT_TOPBAR_BG,
     tolerance:{},
+    savedThemes: preservedThemes,
     taken 
   };
   saveState();
-  boot();
+  topbar.style.display = 'none';
+  currentWizStep = 1;
+  openWizardStep(currentWizStep);
 });
+
+/* ===== FLUJO DE BIENVENIDA PASO A PASO (WIZARD) ===== */
+function openWizardStep(step){
+  const wiz = document.getElementById('wizardOverlay');
+  const cnt = document.getElementById('wizardContent');
+  const lbl = document.getElementById('wizStepLabel');
+  const prev = document.getElementById('wizPrev');
+
+  wiz.classList.add('show');
+  lbl.textContent = `Paso ${step} de 5`;
+  prev.disabled = step === 1;
+
+  if(step === 1){
+    cnt.innerHTML = `
+      <h3>📝 <span class="wiz-big-num">1 -</span> Preparemos algunas cosas antes:</h3>
+      <p>Configuraremos tus horarios, avisos y preferencias en unos sencillos pasos para que el acompañamiento sea perfecto.</p>`;
+  } else if(step === 2){
+    cnt.innerHTML = `
+      <h3><span class="wiz-big-num">2 -</span> Horarios de las tomas</h3>
+      <p style="font-size:14px;margin-bottom:12px;">Ajustá los cuatro horarios según la indicación de tu médico:</p>
+      <div class="times-grid" id="wizTimesGrid"></div>`;
+    renderWizTimes();
+  } else if(step === 3){
+    cnt.innerHTML = `
+      <h3>⏰ <span class="wiz-big-num">3 -</span> Activar recordatorios</h3>
+      <div class="switch-row" style="margin-bottom:10px;">
+        <span class="lbl">Aviso de toma</span>
+        <label class="switch">
+          <input type="checkbox" id="wizNotifToggle" ${state.notifs ? 'checked' : ''}>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="switch-row">
+        <span class="lbl">Volver a avisar si no marqué</span>
+        <label class="switch">
+          <input type="checkbox" id="wizFuToggle" ${state.followup ? 'checked' : ''}>
+          <span class="slider"></span>
+        </label>
+      </div>`;
+    document.getElementById('wizNotifToggle').onchange = (e)=>{ state.notifs = e.target.checked; saveState(); };
+    document.getElementById('wizFuToggle').onchange = (e)=>{ state.followup = e.target.checked; saveState(); };
+  } else if(step === 4){
+    cnt.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h3 style="margin:0;">🎨 <span class="wiz-big-num">4 -</span> Colores</h3>
+        <button class="btn-save-sm" id="wizSaveColors">💾 Guardar</button>
+      </div>
+      <p style="font-size:13px;margin-bottom:10px;">Elegí los tonos que mejor se adapten a tu vista:</p>
+      <div class="color-pickers">
+        <div class="color-field"><label>Fondo</label><input type="color" id="wizBg" value="${state.bgColor||DEFAULT_BG}"></div>
+        <div class="color-field"><label>Barra Superior</label><input type="color" id="wizTopbar" value="${state.topbarColor||DEFAULT_TOPBAR_BG}"></div>
+        <div class="color-field"><label>Paneles</label><input type="color" id="wizCard" value="${state.cardColor||DEFAULT_SURFACE}"></div>
+        <div class="color-field"><label>Botones Tomas</label><input type="color" id="wizDose" value="${state.doseBtnColor||DEFAULT_DOSE_BTN_BG}"></div>
+      </div>`;
+    document.getElementById('wizSaveColors').onclick = ()=>{
+      state.bgColor = document.getElementById('wizBg').value;
+      state.topbarColor = document.getElementById('wizTopbar').value;
+      state.cardColor = document.getElementById('wizCard').value;
+      state.doseBtnColor = document.getElementById('wizDose').value;
+      applyColors();
+      saveState();
+      openInfoModal('💾', 'Configuración guardada', 'Los colores se actualizaron correctamente.');
+    };
+  } else if(step === 5){
+    cnt.innerHTML = `
+      <div class="fireworks-box">🎆🎉</div>
+      <h3 class="wiz-large-title">¡Listo! ¡¡Comenzamos!!</h3>
+      <p style="text-align:center;font-size:16px;margin-top:12px;">Todo está preparado para acompañarte durante tus 10 días de tratamiento.</p>`;
+  }
+}
+
+function renderWizTimes(){
+  const grid = document.getElementById('wizTimesGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  state.times.forEach((t,i)=>{
+    const info = TOMA_LABELS[i] || {n:'Toma '+(i+1), e:''};
+    const f = document.createElement('div'); f.className = 'time-field';
+    f.innerHTML = `<label>${info.e} ${info.n}</label><input type="time" value="${t}" data-idx="${i}">`;
+    grid.appendChild(f);
+  });
+  grid.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('change', ()=>{ state.times[+inp.dataset.idx] = inp.value||"00:00"; saveState(); });
+  });
+}
+
+document.getElementById('wizPrev').onclick = ()=>{
+  if(currentWizStep > 1){
+    currentWizStep--;
+    openWizardStep(currentWizStep);
+  }
+};
+
+document.getElementById('wizNext').onclick = ()=>{
+  if(currentWizStep < 5){
+    currentWizStep++;
+    openWizardStep(currentWizStep);
+  } else {
+    document.getElementById('wizardOverlay').classList.remove('show');
+    boot();
+    const btnHoy = document.querySelector('nav.tabs button[data-tab="hoy"]');
+    if(btnHoy) btnHoy.click();
+  }
+};
 
 /* ===== RENDER ===== */
 function renderAll(){
@@ -873,7 +1114,6 @@ function renderHoy(){
   const pctVal = Math.round(marcadas/(TOTAL_DIAS*TOMAS_POR_DIA)*100);
   document.getElementById('overallPct').textContent = pctVal+'%';
   
-  // Actualizar barra visual llena
   const pBar = document.getElementById('progressBar');
   if(pBar) pBar.style.width = pctVal + '%';
 
@@ -925,6 +1165,11 @@ function renderHoy(){
       if(state.taken[day][i]) alerted.add(day+'-'+i);
       saveState(); renderHoy();
       if(isNative && state.notifs) scheduleNativeNotifications();
+
+      // VERIFICAR FIN DEL TRATAMIENTO (DÍA 10 - TOMA 4)
+      if(day === TOTAL_DIAS && state.taken[TOTAL_DIAS].every(Boolean)){
+        openFinishCelebrationModal();
+      }
     });
   });
 
@@ -955,43 +1200,167 @@ function renderHoy(){
     missedWrap.innerHTML = '';
   }
 
-  // RENDER REGISTRO DE TOLERANCIA DE HOY
   renderToleranceUI(day);
 }
 
+/* ===== REGISTRO DE TOLERANCIA MÚLTIPLE DÍA A DÍA ===== */
 function renderToleranceUI(day){
   const btns = document.querySelectorAll('.tolerance-btn');
   const tip = document.getElementById('toleranceTip');
-  const currentVal = state.tolerance ? state.tolerance[day] : null;
+  
+  if(!state.tolerance) state.tolerance = {};
+  if(!Array.isArray(state.tolerance[day])) state.tolerance[day] = [];
+  
+  const currentArr = state.tolerance[day];
 
   btns.forEach(b=>{
-    b.classList.toggle('selected', b.dataset.val === currentVal);
-    b.onclick = ()=>{
-      const val = b.dataset.val;
-      if(!state.tolerance) state.tolerance = {};
-      state.tolerance[day] = val;
+    const val = b.dataset.val;
+    b.classList.toggle('selected', currentArr.includes(val));
+    
+    b.onclick = (e)=>{
+      e.stopPropagation();
+      if(currentArr.includes(val)){
+        state.tolerance[day] = currentArr.filter(x=>x!==val);
+      } else {
+        state.tolerance[day].push(val);
+      }
       saveState();
       renderToleranceUI(day);
     };
   });
 
-  if(currentVal === 'oscura'){
-    tip.innerHTML = '<b>Nota:</b> El bismuto puede oscurecer temporalmente las heces y la lengua. Es un efecto totalmente esperable y normal durante los 10 días.';
-  } else if(currentVal === 'metal'){
-    tip.innerHTML = '<b>Nota:</b> El metronidazol suele producir un leve sabor metálico en la boca. Se normaliza al finalizar el tratamiento.';
-  } else if(currentVal === 'molestia'){
-    tip.innerHTML = '<b>Sugerencia:</b> Recordá tomar las cápsulas siempre acompañadas de alimentos para reducir las molestias estomacales.';
-  } else if(currentVal === 'bien'){
+  if(currentArr.includes('oscura')){
+    tip.innerHTML = '<b>Nota:</b> El bismuto puede oscurecer temporalmente las heces y la lengua. Es un efecto esperable y normal.';
+  } else if(currentArr.includes('metal')){
+    tip.innerHTML = '<b>Nota:</b> El metronidazol suele producir un leve sabor metálico en la boca. Se normaliza al finalizar.';
+  } else if(currentArr.includes('molestia')){
+    tip.innerHTML = '<b>Sugerencia:</b> Recordá tomar las cápsulas acompañadas de alimentos para reducir las molestias.';
+  } else if(currentArr.includes('bien')){
     tip.innerHTML = '¡Excelente! Continuá respetando las 4 tomas diarias.';
   } else {
     tip.innerHTML = '';
   }
 }
 
-// RECORDATORIO POST TRATAMIENTO EN CALENDARIO
-document.getElementById('addControlReminderBtn').addEventListener('click', ()=>{
-  openInfoModal('📅', 'Test de Control', 'Sugerimos agendar una consulta médica para dentro de 4 semanas a partir de hoy. Tu médico te indicará el test del aliento o de antígeno para confirmar la erradicación.');
-});
+// BOTÓN "VER" HISTORIAL DE SÍNTOMAS
+document.getElementById('viewToleranceLogBtn').onclick = (e)=>{
+  e.stopPropagation();
+  let text = '<b>Historial de síntomas registrados:</b><br><br>';
+  let count = 0;
+  for(let d=1; d<=TOTAL_DIAS; d++){
+    if(state.tolerance && state.tolerance[d] && state.tolerance[d].length > 0){
+      const list = state.tolerance[d].map(k=>TOLERANCE_MAP[k]||k).join(', ');
+      text += `<b>Día ${d}:</b> ${list}<br>`;
+      count++;
+    }
+  }
+  if(count === 0) text += 'Aún no registraste síntomas en lo que va del tratamiento.';
+  openInfoModal('👁️', 'Ver registro de tolerancia', text);
+};
+
+// BOTÓN "REGISTRO" REGISTRO TOTAL DEL TRATAMIENTO (TOMAS + TOLERANCIA)
+document.getElementById('viewFullRegisterBtn').onclick = (e)=>{
+  e.stopPropagation();
+  const currentDay = todayIndex();
+  let html = '<b>Seguimiento general del tratamiento:</b><br><br>';
+  
+  for(let d=1; d<=TOTAL_DIAS; d++){
+    if(d > currentDay){
+      html += `<div style="margin-bottom:8px;padding-bottom:6px;border-bottom:1px dashed var(--line);opacity:0.6;">
+        <b>Día ${d}:</b> <i>Pendiente</i>
+      </div>`;
+      continue;
+    }
+
+    const takenArr = state.taken[d] || [false, false, false, false];
+    const takenDetails = state.times.map((t, idx)=>{
+      const info = TOMA_LABELS[idx] || {n:'Toma '+(idx+1)};
+      const mark = takenArr[idx] ? '✅' : '❌';
+      return `${mark} ${info.n} (${t} hs)`;
+    }).join(' | ');
+
+    const tolArr = (state.tolerance && state.tolerance[d]) || [];
+    const tolText = tolArr.length > 0 ? tolArr.map(k=>TOLERANCE_MAP[k]||k).join(', ') : 'Sin síntomas registrados';
+
+    html += `<div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--line);">
+      <b>Día ${d}:</b><br>
+      <small style="color:var(--ink-soft);">${takenDetails}</small><br>
+      <small><b>Tolerancia:</b> ${tolText}</small>
+    </div>`;
+  }
+
+  openInfoModal('📜', 'Registro total del tratamiento', html);
+};
+
+/* ===== GENERAR TEXTO DE RESUMEN SÍNTOMAS ===== */
+function buildSymptomsSummaryText(){
+  let summary = `📋 Resumen de Síntomas del Tratamiento Pylober (10 días):\n\n`;
+  let hasData = false;
+  for(let d=1; d<=TOTAL_DIAS; d++){
+    if(state.tolerance && state.tolerance[d] && state.tolerance[d].length > 0){
+      const list = state.tolerance[d].map(k=>TOLERANCE_MAP[k]||k).join(', ');
+      summary += `• Día ${d}: ${list}\n`;
+      hasData = true;
+    }
+  }
+  if(!hasData) summary += `• No se registraron síntomas ni molestias destacables durante los 10 días. ¡Excelente tolerancia! 🎉\n`;
+  return summary;
+}
+
+/* ===== POP-UP Y BOTONES CELEBRACIÓN DE FINALIZACIÓN ===== */
+function openFinishCelebrationModal(){
+  box.innerHTML = `
+    <div class="m-ico">🎉</div>
+    <h3>¡Felicitaciones! Has cumplido con el tratamiento</h3>
+    <p>Completaste exitosamente tus 10 días de Pylober sin interrumpir. ¡Un gran logro para tu salud digestiva!</p>
+    <div class="celebration-actions" style="grid-template-columns:1fr 1fr;">
+      <button class="celebration-btn joy-btn" id="popJoyBtn">🟡 Alegría</button>
+      <button class="celebration-btn" id="popTextBtn">✏️ Resumen</button>
+      <button class="celebration-btn" id="popWaBtn">💬 WhatsApp</button>
+      <button class="celebration-btn" id="popCalendarBtn">🗓️ Agendar Test</button>
+    </div>
+    <button class="btn btn-primary" id="popCloseBtn" style="margin-top:16px;">Cerrar</button>`;
+  
+  scrim.classList.add('show');
+
+  box.querySelector('#popJoyBtn').onclick = showJoyFriendlySummary;
+  box.querySelector('#popTextBtn').onclick = showPencilTextSummary;
+  box.querySelector('#popWaBtn').onclick = sendSummaryWhatsApp;
+  box.querySelector('#popCalendarBtn').onclick = triggerCalendarReminder;
+  box.querySelector('#popCloseBtn').onclick = closeModal;
+}
+
+function showJoyFriendlySummary(){
+  const base = buildSymptomsSummaryText();
+  openInfoModal('🟡', '¡Alegría de Intensamente te felicita!', `¡Qué increíble logro! 🌟 Mantuviste la disciplina todos los días y tu cuerpo te lo agradece. Este es el detalle amigable de cómo te sentiste:<br><br>${base.replace(/\n/g, '<br>')}`);
+}
+
+function showPencilTextSummary(){
+  const base = buildSymptomsSummaryText();
+  openInfoModal('✏️', 'Resumen descriptivo de tolerancia', `A continuación tenés el informe ordenado de síntomas registrados día por día para guardar o consultar con tu profesional de la salud:<br><br>${base.replace(/\n/g, '<br>')}`);
+}
+
+function sendSummaryWhatsApp(){
+  const num = waDigits();
+  const summary = buildSymptomsSummaryText();
+  const text = `🎉 ¡Finalicé exitosamente mis 10 días de Pylober!\n\n` + summary;
+  if(!num){
+    openInfoModal('⚠️','Falta el número','Ingresá un número en la sección Recordatorios para enviar tu informe por WhatsApp.');
+    return;
+  }
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(text),'_blank');
+}
+
+function triggerCalendarReminder(){
+  openInfoModal('📅', 'Test de Control Agendado', 'Sugerimos agendar una consulta médica para dentro de 4 semanas a partir de hoy para realizar el test de control de la bacteria (aliento o antígeno).');
+}
+
+// CONECTAR BOTONES DE PANTALLA HOY-DONE
+document.getElementById('joySummaryBtn').onclick = showJoyFriendlySummary;
+document.getElementById('textSummaryBtn').onclick = showPencilTextSummary;
+document.getElementById('waSummaryBtn').onclick = sendSummaryWhatsApp;
+document.getElementById('calendarReminderBtn').onclick = triggerCalendarReminder;
+document.getElementById('addControlReminderBtn').onclick = triggerCalendarReminder;
 
 function renderRecordatorios(){
   document.getElementById('bgPicker').value = state.bgColor || DEFAULT_BG;
@@ -1001,6 +1370,8 @@ function renderRecordatorios(){
   document.getElementById('infoPicker').value = state.infoColor || DEFAULT_CARD_INFO;
   document.getElementById('doseBtnPicker').value = state.doseBtnColor || DEFAULT_DOSE_BTN_BG;
   document.getElementById('tabBarPicker').value = state.tabBarColor || DEFAULT_TAB_BAR_BG;
+
+  renderSavedThemesSelect();
 
   const grid=document.getElementById('timesGrid'); grid.innerHTML='';
   state.times.forEach((t,i)=>{
@@ -1031,6 +1402,60 @@ function renderRecordatorios(){
   { const _v=document.getElementById('vademecumUrl'); if(_v) _v.value = state.vademecumUrl||DEFAULT_VADEMECUM; }
 
   document.getElementById('startInfo').textContent = 'Comenzado el '+fmtDate(state.startDate);
+}
+
+// GUARDAR Y SELECCIONAR TEMAS DE COLORES
+document.getElementById('saveThemeBtn').onclick = (e)=>{
+  e.stopPropagation();
+  const name = prompt("Ingresá un nombre para esta combinación de colores:", "Mi Tema " + ((state.savedThemes?.length||0) + 1));
+  if(!name) return;
+  
+  const themeObj = {
+    name,
+    bgColor: document.getElementById('bgPicker').value,
+    topbarColor: document.getElementById('topbarPicker').value,
+    cardColor: document.getElementById('cardPicker').value,
+    inicioColor: document.getElementById('inicioPicker').value,
+    infoColor: document.getElementById('infoPicker').value,
+    doseBtnColor: document.getElementById('doseBtnPicker').value,
+    tabBarColor: document.getElementById('tabBarPicker').value
+  };
+
+  if(!state.savedThemes) state.savedThemes = [];
+  state.savedThemes.push(themeObj);
+  saveState();
+  renderSavedThemesSelect();
+  openInfoModal('💾', 'Tema Guardado', `Se guardó correctamente la paleta "${name}".`);
+};
+
+function renderSavedThemesSelect(){
+  const sel = document.getElementById('savedThemesSelect');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">-- Mis temas guardados --</option>';
+  (state.savedThemes||[]).forEach((t, i)=>{
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = t.name;
+    sel.appendChild(opt);
+  });
+
+  sel.onchange = (e)=>{
+    const idx = e.target.value;
+    if(idx === "") return;
+    const t = state.savedThemes[idx];
+    if(t){
+      state.bgColor = t.bgColor;
+      state.topbarColor = t.topbarColor;
+      state.cardColor = t.cardColor;
+      state.inicioColor = t.inicioColor;
+      state.infoColor = t.infoColor;
+      state.doseBtnColor = t.doseBtnColor;
+      state.tabBarColor = t.tabBarColor;
+      applyColors();
+      saveState();
+      renderRecordatorios();
+    }
+  };
 }
 
 document.getElementById('bgPicker').addEventListener('input', (e)=>{ state.bgColor = e.target.value; applyColors(); saveState(); });
@@ -1113,7 +1538,36 @@ document.getElementById('waTest').addEventListener('click',()=>{
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   openConfirm('warn','⚠️','Reiniciar tratamiento','¿Querés volver al día 1? Se borra el progreso actual y no se puede deshacer.','Reiniciar', ()=>{
     if(isNative) cancelAllNative();
-    store.del(KEY); state=null; alerted=new Set(); boot();
+    const preservedThemes = state?.savedThemes || [];
+    store.del(KEY);
+    state = null;
+    alerted = new Set();
+    
+    // Crear nuevo estado inicial preservando los temas
+    const taken = {};
+    for(let d=1; d<=TOTAL_DIAS; d++) taken[d] = Array(TOMAS_POR_DIA).fill(false);
+    state = {
+      startDate: startOfDay(new Date()).toISOString(),
+      times:[...HORARIOS_DEFAULT],
+      notifs:false,
+      waEnabled:false,
+      waNumber:'',
+      followup:false,
+      followupMin:FOLLOWUP_MIN_DEFAULT,
+      vademecumUrl: DEFAULT_VADEMECUM,
+      bgColor: DEFAULT_BG,
+      cardColor: DEFAULT_SURFACE,
+      inicioColor: DEFAULT_CARD_INICIO,
+      infoColor: DEFAULT_CARD_INFO,
+      doseBtnColor: DEFAULT_DOSE_BTN_BG,
+      tabBarColor: DEFAULT_TAB_BAR_BG,
+      topbarColor: DEFAULT_TOPBAR_BG,
+      tolerance:{},
+      savedThemes: preservedThemes,
+      taken
+    };
+    saveState();
+    boot();
   });
 });
 
