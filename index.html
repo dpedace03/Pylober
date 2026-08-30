@@ -425,21 +425,17 @@ nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
   display:block;
 }
 
-/* POP-OVER FIX EN PANTALLA SOBRE EL BOTÓN FLOTANTE */
+/* POP-OVER INTEGRADO EN EL FLUTO DEL SCROLL */
 .bot-popover{
   display:none;
-  position:fixed;
-  bottom:calc(158px + env(safe-area-inset-bottom));
-  right:16px;
-  left:16px;
-  max-width:480px;
-  margin:0 auto;
+  position:relative;
   z-index:130;
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:20px;
-  box-shadow:var(--shadow-lg);
+  box-shadow:var(--shadow);
   padding:16px;
+  margin-bottom:16px;
   animation:slideUp .25s ease both;
 }
 .bot-popover.open{display:block;}
@@ -848,7 +844,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <p class="hint" style="margin-bottom:0;">Información del producto de Laboratorios Bernabó. No reemplaza la indicación de su médico.</p>
       </div>
 
-      <!-- DESPLEGABLE POP-OVER CON BÚSQUEDA EN TIEMPO REAL -->
+      <!-- DESPLEGABLE POP-OVER DENTRO DEL FLUTO DE PANTALLA -->
       <div class="bot-popover" id="botPopover">
         <div class="bot-header">
           <div class="bot-title">
