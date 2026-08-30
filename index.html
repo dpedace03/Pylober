@@ -264,7 +264,7 @@ main{
 .btn-wa:active{background:#1eb457;transform:translateY(1px)}
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
-.panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+.panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;position:relative;}
 .panel h2{font-family:var(--font-display);font-weight:500;font-size:20px;margin:0;white-space:nowrap;}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
 
@@ -390,17 +390,122 @@ nav.tabs button[data-tab="recordatorios"] svg{stroke:#e4572e !important}
 nav.tabs button[data-tab="info"] svg{stroke:#ef9f27 !important}
 nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
 
-.doc-img{width:100%;height:auto;border-radius:12px;margin-bottom:12px;display:block;box-shadow:0 1px 8px rgba(0,0,0,.10)}
+.doc-img-container{position:relative;margin-bottom:12px;}
+.doc-img{width:100%;height:auto;border-radius:12px;display:block;box-shadow:0 1px 8px rgba(0,0,0,.10)}
+.highlight-overlay{
+  position:absolute;
+  left:5%;
+  width:90%;
+  height:40px;
+  background:rgba(255, 235, 59, 0.45);
+  border:2px dashed #f57f17;
+  border-radius:6px;
+  pointer-events:none;
+  display:none;
+  box-shadow:0 0 12px rgba(255,235,59,0.8);
+  animation:pulseHighlight 1.5s infinite alternate;
+}
+@keyframes pulseHighlight{
+  from{opacity:0.6;transform:scale(0.99);}
+  to{opacity:1;transform:scale(1.01);}
+}
+
+/* BOTÓN FLOTANTE AL LADO DEL TÍTULO EN PROSPECTO */
+.prospecto-header-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.bot-inline-fixed-btn{
+  position:sticky;
+  top:calc(75px + env(safe-area-inset-top));
+  float:right;
+  z-index:110;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:linear-gradient(135deg, #12a6a2 0%, #0c7d7a 100%);
+  border:3px solid #ffffff;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:-10px;
+  margin-right:-6px;
+  transition:transform .2s ease, box-shadow .2s ease;
+  animation:floatPulse 2s infinite ease-in-out;
+}
+.bot-inline-fixed-btn:active{transform:scale(0.9)}
+@keyframes floatPulse{
+  0%, 100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-6px) scale(1.05);}
+}
+
+/* CARICATURA PASTILLA SVG MÁS GRANDE */
+.pill-avatar-lg{
+  width:52px;
+  height:52px;
+  display:block;
+}
+
+.bot-popover{
+  display:none;
+  position:fixed;
+  top:calc(140px + env(safe-area-inset-top));
+  right:16px;
+  left:16px;
+  max-width:480px;
+  margin:0 auto;
+  z-index:130;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow-lg);
+  padding:16px;
+  animation:slideUp .25s ease both;
+}
+.bot-popover.open{display:block;}
+
+.bot-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:8px;
+}
+.bot-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:16px;
+  color:var(--ink);
+}
+.bot-close-btn{
+  background:none;
+  border:none;
+  font-size:20px;
+  color:var(--ink-soft);
+  cursor:pointer;
+  padding:0 6px;
+}
+
 .bot-input{display:flex;gap:8px;margin:6px 0 10px}
 .bot-input input{flex:1;min-width:0;padding:10px 12px;border:1px solid #d8d1c4;border-radius:10px;font-family:inherit;font-size:15px}
 .bot-input button{border:none;background:var(--primary);color:#fff;border-radius:10px;padding:0 16px;font-weight:700;cursor:pointer}
 .bot-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .bot-chip{border:1px solid var(--primary);background:none;color:var(--primary);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
 .bot-answer:empty{display:none}
-.bot-bubble{background:#fff;border:1px solid #e7e2d8;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.5}
+.bot-bubble{background:#fff;border:1px solid #e7e2d8;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.5;max-height:220px;overflow-y:auto;}
 .bot-bubble b{color:var(--primary)}
 .bot-bubble p{margin:6px 0 0}
-.bot-disc{font-size:12px;color:var(--ink-soft);margin:8px 0 0}
+.bot-actions-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.bot-view-btn{background:var(--amber-tint);border:1px solid var(--amber);color:#7a4a12;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;}
+.bot-disc{font-size:11px;color:var(--ink-soft);}
 .doc-img{cursor:zoom-in}
 .imgzoom{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);display:flex;flex-direction:column}
 .imgzoom[hidden]{display:none}
@@ -748,12 +853,40 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
     <!-- PROSPECTO -->
     <section class="view" id="view-prospecto">
       <div class="panel">
-        <h2>Prospecto y material</h2>
-        <p class="hint">Información del producto de Laboratorios Bernabó. No reemplaza la indicación de su médico.</p>
+        <div class="prospecto-header-wrap">
+          <div>
+            <h2>Prospecto y material</h2>
+            <p class="hint" style="margin-bottom:0;">Información del producto de Laboratorios Bernabó. No reemplaza la indicación de su médico.</p>
+          </div>
+          
+          <!-- BOTÓN FLOTANTE AL LADO DEL TEXTO (PASTILLA ANIMADA MÁS GRANDE) -->
+          <button class="bot-inline-fixed-btn" id="botToggleBtn" title="Asistente Pylober">
+            <svg class="pill-avatar-lg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cuerpo Cápsula -->
+              <rect x="25" y="15" width="50" height="70" rx="25" fill="#ffffff" stroke="#12a6a2" stroke-width="4"/>
+              <path d="M25 50 H75 V65 A25 25 0 0 1 25 65 Z" fill="#2e7d32"/>
+              <!-- Cara Caricatura -->
+              <circle cx="40" cy="35" r="4" fill="#123536"/>
+              <circle cx="60" cy="35" r="4" fill="#123536"/>
+              <circle cx="41" cy="33" r="1.5" fill="#ffffff"/>
+              <circle cx="61" cy="33" r="1.5" fill="#ffffff"/>
+              <path d="M42 43 Q50 49 58 43" stroke="#123536" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <ellipse cx="33" cy="40" rx="3" ry="2" fill="#ff8a80" opacity="0.6"/>
+              <ellipse cx="67" cy="40" rx="3" ry="2" fill="#ff8a80" opacity="0.6"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="panel">
-        <h2>Consultá sobre Pylober</h2>
-        <p class="hint">Escribí tu pregunta. Respondo con la información del prospecto y la literatura de Pylober.</p>
+
+      <!-- DESPLEGABLE POP-OVER DE PREGUNTAS -->
+      <div class="bot-popover" id="botPopover">
+        <div class="bot-header">
+          <div class="bot-title">
+            <span>💊 Asistente Pylober</span>
+          </div>
+          <button class="bot-close-btn" id="botCloseBtn">✕</button>
+        </div>
+        <p class="hint" style="margin-bottom:8px;font-size:13px;">Escribí tu pregunta sobre el prospecto de Pylober:</p>
         <div class="bot-input">
           <input type="text" id="botQ" placeholder="Ej: ¿puedo tomar alcohol?">
           <button id="botAsk" type="button">Preguntar</button>
@@ -761,9 +894,17 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div class="bot-chips" id="botChips"></div>
         <div class="bot-answer" id="botAns"></div>
       </div>
+
       <div class="section-title">Prospecto</div>
-      <img class="doc-img" src="prospecto-1.png" alt="Prospecto Pylober página 1">
-      <img class="doc-img" src="prospecto-2.png" alt="Prospecto Pylober página 2">
+      <div class="doc-img-container" id="p1Container">
+        <img class="doc-img" id="imgP1" src="prospecto-1.png" alt="Prospecto Pylober página 1">
+        <div class="highlight-overlay" id="p1Highlight"></div>
+      </div>
+      <div class="doc-img-container" id="p2Container">
+        <img class="doc-img" id="imgP2" src="prospecto-2.png" alt="Prospecto Pylober página 2">
+        <div class="highlight-overlay" id="p2Highlight"></div>
+      </div>
+      
       <div class="section-title">Literatura</div>
       <img class="doc-img" src="literatura-1.png" alt="Literatura Pylober página 1">
       <img class="doc-img" src="literatura-2.png" alt="Literatura Pylober página 2">
@@ -1805,50 +1946,54 @@ document.querySelectorAll('nav.tabs button').forEach(btn=>{
   });
 });
 
-/* ===== BOT PROSPECTO ===== */
+/* ===== BOT PROSPECTO CON BÚSQUEDA Y "VER" EN PROSPECTO ===== */
 const PROSPECTO_KB=[
   {t:"¿Para qué sirve Pylober?", k:["para que","sirve","indicacion","helicobacter","pylori","bacteria","infeccion","estomago","gastritis","ulcera"],
-   a:"Pylober está indicado para el tratamiento de la infección por Helicobacter pylori, la bacteria asociada a gastritis, úlcera y otras afecciones del estómago."},
+   a:"Pylober está indicado para el tratamiento de la infección por Helicobacter pylori, la bacteria asociada a gastritis, úlcera y otras afecciones del estómago.", page:1, top:25},
   {t:"Composición", k:["composicion","contiene","formula","ingredientes","droga","principio activo","bismuto","metronidazol","tetraciclina","capsulas","presentacion"],
-   a:"Cada cápsula contiene Subcitrato de Bismuto Potásico 140 mg, Metronidazol 125 mg y Tetraciclina Clorhidrato 125 mg. Presentación: 120 cápsulas, vía oral."},
+   a:"Cada cápsula contiene Subcitrato de Bismuto Potásico 140 mg, Metronidazol 125 mg y Tetraciclina Clorhidrato 125 mg. Presentación: 120 cápsulas, vía oral.", page:1, top:45},
   {t:"Duración del tratamiento", k:["cuanto dura","cuantos dias","duracion","tiempo","10 dias","diez dias","termina","cuando termino"],
-   a:"El tratamiento con Pylober dura 10 días."},
+   a:"El tratamiento con Pylober dura 10 días.", page:1, top:60},
   {t:"Cómo se toma", k:["como se toma","como tomar","cuantas veces","cuantas tomas","cuantas pastillas","cuantas capsulas","posologia","veces al dia","desayuno","almuerzo","merienda","cena","horarios"],
-   a:"Son 4 tomas por día (desayuno, almuerzo, merienda y cena), según la indicación de tu médico. Ingerí siempre las cápsulas con un alimento."},
+   a:"Son 4 tomas por día (desayuno, almuerzo, merienda y cena), según la indicación de tu médico. Ingerí siempre las cápsulas con un alimento.", page:1, top:70},
   {t:"Tomar con comida", k:["comida","alimento","ayunas","comer","estomago vacio","con las comidas"],
-   a:"Pylober se ingiere siempre con un alimento; no se toma en ayunas."},
+   a:"Pylober se ingiere siempre con un alimento; no se toma en ayunas.", page:1, top:75},
   {t:"Protector gástrico (IBP)", k:["ibp","inhibidor","bomba de protones","omeprazol","protector","gastec","esogastec","antiacido"],
-   a:"Junto con Pylober se administra un IBP (inhibidor de la bomba de protones) dos veces al día, 30 minutos antes de las comidas (preferentemente Gastec o Esogastec), según indique tu médico."},
+   a:"Junto con Pylober se administra un IBP (inhibidor de la bomba de protones) dos veces al día, 30 minutos antes de las comidas (preferentemente Gastec o Esogastec), según indique tu médico.", page:1, top:85},
   {t:"Alcohol", k:["alcohol","bebida alcoholica","cerveza","vino","trago","fernet"],
-   a:"No se debe consumir alcohol durante el tratamiento con Pylober."},
+   a:"No se debe consumir alcohol durante el tratamiento con Pylober.", page:2, top:20},
   {t:"Lácteos", k:["lacteos","leche","yogur","queso","lacteo"],
-   a:"No se debe tomar Pylober junto con lácteos (leche, yogur, queso)."},
+   a:"No se debe tomar Pylober junto con lácteos (leche, yogur, queso).", page:2, top:30},
   {t:"Exposición al sol", k:["sol","solar","playa","protector solar","exposicion","fotosensibilidad","tomar sol"],
-   a:"Durante el tratamiento hay que evitar la exposición solar y usar protector solar y ropa adecuada."},
+   a:"Durante el tratamiento hay que evitar la exposición solar y usar protector solar y ropa adecuada.", page:2, top:42},
   {t:"Señales de alarma", k:["sintomas","signos","alarma","cuando consultar","peligro","sangrado","sangre","heces negras","vomito","vomitos","peso","disfagia","tragar","dolor abdominal","anemia"],
-   a:"Consultá a tu médico ante señales de alarma: pérdida de peso inexplicable, dificultad para tragar, anemia (fatiga o palidez), sangrado (vómito con sangre o heces negras), dolor abdominal severo y progresivo, vómitos persistentes o antecedentes familiares de cáncer gástrico."},
+   a:"Consultá a tu médico ante señales de alarma: pérdida de peso inexplicable, dificultad para tragar, anemia (fatiga o palidez), sangrado (vómito con sangre o heces negras), dolor abdominal severo y progresivo, vómitos persistentes o antecedentes familiares de cáncer gástrico.", page:2, top:58},
   {t:"Alergia a la penicilina", k:["alergia","penicilina","alergico"],
-   a:"Pylober es una opción segura para pacientes alérgicos a la penicilina."},
+   a:"Pylober es una opción segura para pacientes alérgicos a la penicilina.", page:2, top:72},
   {t:"Eficacia", k:["eficacia","funciona","resultados","resistent","resistencia","fallo previo","erradicacion","efectivo","efectividad","primera linea"],
-   a:"Pylober logra tasas de erradicación superiores al 90%, con cumplimiento superior al 95%. Es eficaz incluso en cepas resistentes y en casos donde otros tratamientos no funcionaron. Se recomienda como primera línea cuando la susceptibilidad a los antibióticos es desconocida."},
-  {t:"Qué es el Helicobacter pylori", k:["que es helicobacter","que es pylori","contagio","prevalencia","cuanta gente"],
-   a:"El Helicobacter pylori es la infección bacteriana crónica más frecuente; se estima que afecta a cerca del 50% de la población mundial (en Argentina, entre el 40% y el 49%)."},
-  {t:"Olvidé una toma", k:["olvide","olvido","me salte","no tome","saltee","perdi una toma","me olvide"],
-   a:"Si olvidaste una toma, seguí la indicación de tu médico y no dupliques la dosis por tu cuenta. Ante dudas, consultá con tu médico o farmacéutico."},
-  {t:"Embarazo y lactancia", k:["embarazo","embarazada","lactancia","amamantar","dando de mamar"],
-   a:"Esa información no figura en este material. Consultá con tu médico antes de tomar Pylober si estás embarazada o amamantando."},
-  {t:"Efectos adversos y contraindicaciones", k:["efectos","adversos","reacciones","secundarios","contraindicaciones","contraindicado","efecto adverso"],
-   a:"El detalle de efectos adversos y contraindicaciones está en el prospecto completo (más abajo). Ante cualquier reacción, consultá a tu médico o farmacéutico."},
-  {t:"Laboratorio y contacto", k:["laboratorio","bernabo","contacto","telefono","mail","email"],
-   a:"Pylober es de Laboratorios Bernabó S.A. Contacto: 0810-555-0111 · info@laboratoriosbernabo.com."},
-  {t:"Enfermedades asociadas al H. pylori", k:["impacto","enfermedades","que causa","que provoca","cancer","cancer gastrico","linfoma","malt","dispepsia","complicaciones","riesgos","que produce","asociadas"],
-   a:"La infección por Helicobacter pylori puede asociarse a: úlcera péptica, cáncer gástrico, linfoma MALT, dispepsia funcional, anemia ferropénica inexplicada, púrpura trombocitopénica idiopática, gastritis crónica activa y enfermedad ulcerosa asociada a AINEs."},
-  {t:"Ventajas de Pylober", k:["ventajas","beneficios","por que elegir","por que pylober","que tiene de bueno","por que conviene"],
-   a:"Eficacia comprobada (más del 90% de erradicación), tratamiento compacto de 10 días, opción segura para alérgicos a la penicilina, alta adherencia (más del 95%), eficaz tras fallos previos y eficaz incluso en cepas resistentes."},
-  {t:"Prevalencia del H. pylori", k:["prevalencia","cuanta gente","frecuente","comun","poblacion","argentina","mundo","estadistica"],
-   a:"El Helicobacter pylori es la infección bacteriana crónica más frecuente: se estima que afecta a cerca del 50% de la población mundial y, en Argentina, entre el 40% y el 49%."}
+   a:"Pylober logra tasas de erradicación superiores al 90%, con cumplimiento superior al 95%. Es eficaz incluso en cepas resistentes y en casos donde otros tratamientos no funcionaron.", page:2, top:82}
 ];
+
 function _norm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+
+function highlightInProspecto(page, topPercent){
+  const h1 = document.getElementById('p1Highlight');
+  const h2 = document.getElementById('p2Highlight');
+  if(!h1 || !h2) return;
+  
+  h1.style.display = 'none';
+  h2.style.display = 'none';
+
+  const targetContainer = document.getElementById(page === 1 ? 'p1Container' : 'p2Container');
+  const targetHighlight = page === 1 ? h1 : h2;
+
+  if(targetContainer && targetHighlight){
+    targetHighlight.style.top = topPercent + '%';
+    targetHighlight.style.display = 'block';
+    targetContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
 function botResponder(q){
   const ans=document.getElementById('botAns'); if(!ans) return;
   const nq=_norm(q);
@@ -1866,19 +2011,42 @@ function botResponder(q){
     });
     if(sc>bestScore){ bestScore=sc; best=sec; }
   });
-  const disc='<p class="bot-disc">Respuesta orientativa. No reemplaza la indicación de tu médico.</p>';
-  if(best && bestScore>0){ ans.innerHTML='<div class="bot-bubble"><b>'+best.t+'</b><p>'+best.a+'</p>'+disc+'</div>'; }
-  else { ans.innerHTML='<div class="bot-bubble">No encontré eso en el material de Pylober. Para esa consulta, lo mejor es ver el prospecto y la literatura (más abajo) o preguntarle a tu médico o farmacéutico.'+disc+'</div>'; }
+  
+  if(best && bestScore>0){ 
+    ans.innerHTML=`
+      <div class="bot-bubble">
+        <b>${best.t}</b>
+        <p>${best.a}</p>
+        <div class="bot-actions-row">
+          <span class="bot-disc">Respuesta orientativa.</span>
+          <button class="bot-view-btn" type="button" id="botViewInDoc">👁️ Ver en prospecto</button>
+        </div>
+      </div>`;
+    
+    document.getElementById('botViewInDoc').onclick = ()=>{
+      document.getElementById('botPopover').classList.remove('open');
+      highlightInProspecto(best.page, best.top);
+    };
+  } else { 
+    ans.innerHTML='<div class="bot-bubble">No encontré eso en el material de Pylober. Para esa consulta, lo mejor es ver el prospecto y la literatura (más abajo) o preguntarle a tu médico o farmacéutico.<p class="bot-disc" style="margin-top:6px;">Respuesta orientativa.</p></div>'; 
+  }
 }
+
 (function initBot(){
   const chips=document.getElementById('botChips'), inp=document.getElementById('botQ'), ask=document.getElementById('botAsk');
-  if(!chips||!inp||!ask) return;
+  const toggleBtn=document.getElementById('botToggleBtn'), popover=document.getElementById('botPopover'), closeBtn=document.getElementById('botCloseBtn');
+  if(!chips||!inp||!ask||!toggleBtn||!popover||!closeBtn) return;
+  
+  toggleBtn.addEventListener('click', ()=>{ popover.classList.toggle('open'); });
+  closeBtn.addEventListener('click', ()=>{ popover.classList.remove('open'); });
+
   const sug=['¿Para qué sirve?','¿Cuántos días dura?','¿Cómo se toma?','¿Puedo tomar alcohol?','Señales de alarma'];
   chips.innerHTML=sug.map(x=>'<button class="bot-chip" type="button">'+x+'</button>').join('');
   chips.querySelectorAll('.bot-chip').forEach(b=>b.addEventListener('click',()=>{ inp.value=b.textContent; botResponder(b.textContent); }));
   ask.addEventListener('click',()=>botResponder(inp.value));
   inp.addEventListener('keydown',e=>{ if(e.key==='Enter') botResponder(inp.value); });
 })();
+
 (function initZoom(){
   const ov=document.getElementById('imgZoom'), im=document.getElementById('izImg');
   if(!ov||!im) return;
