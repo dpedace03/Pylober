@@ -265,7 +265,7 @@ main{
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;position:relative;}
-.panel h2{font-family:var(--font-display);font-weight:500;font-size:20px;margin:0;white-space:nowrap;}
+.panel h2{font-family:var(--font-display);font-weight:500;font-size:18px;margin:0;}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
 
 /* REGLAS DE ORO CHECKLIST */
@@ -425,7 +425,7 @@ nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
   display:block;
 }
 
-/* POP-OVER INTEGRADO EN EL FLUTO DEL SCROLL */
+/* POP-OVER INTEGRADO EN EL FLUJO DEL SCROLL */
 .bot-popover{
   display:none;
   position:relative;
@@ -631,7 +631,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div class="section-title">Tomas de hoy</div>
         <div id="doseList"></div>
 
-        <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS MÚLTIPLE -->
+        <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS MÚLTIPLE (DENTRO DE CARD) -->
         <div class="panel acc" id="tolerancePanel" style="margin-top:16px">
           <div class="acc-head">
             <h2>🩺 Registro de tolerancia de hoy</h2>
@@ -651,7 +651,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <div id="toleranceTip" style="margin-top:10px;font-size:13px;color:var(--ink-soft);"></div>
         </div>
 
-        <!-- REGLAS DE ORO DEL TRATAMIENTO -->
+        <!-- REGLAS DE ORO DEL TRATAMIENTO (DENTRO DE CARD) -->
         <div class="panel acc" style="margin-top:16px">
           <div class="acc-head">
             <h2>✨ Reglas de Oro del tratamiento</h2>
@@ -844,7 +844,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <p class="hint" style="margin-bottom:0;">Información del producto de Laboratorios Bernabó. No reemplaza la indicación de su médico.</p>
       </div>
 
-      <!-- DESPLEGABLE POP-OVER DENTRO DEL FLUTO DE PANTALLA -->
+      <!-- DESPLEGABLE POP-OVER DENTRO DEL FLUJO DE PANTALLA -->
       <div class="bot-popover" id="botPopover">
         <div class="bot-header">
           <div class="bot-title">
@@ -1969,12 +1969,22 @@ function botResponder(q){
   const toggleBtn=document.getElementById('botToggleBtn'), popover=document.getElementById('botPopover'), closeBtn=document.getElementById('botCloseBtn');
   if(!chips||!inp||!toggleBtn||!popover||!closeBtn) return;
   
-  toggleBtn.addEventListener('click', ()=>{ popover.classList.toggle('open'); });
+  toggleBtn.addEventListener('click', ()=>{ 
+    popover.classList.toggle('open'); 
+    if(popover.classList.contains('open')){
+      setTimeout(() => inp.focus(), 100);
+    }
+  });
+  
   closeBtn.addEventListener('click', ()=>{ popover.classList.remove('open'); });
 
   const sug=['¿Para qué sirve?','¿Cuántos días dura?','¿Cómo se toma?','¿Puedo tomar alcohol?','Señales de alarma'];
   chips.innerHTML=sug.map(x=>'<button class="bot-chip" type="button">'+x+'</button>').join('');
-  chips.querySelectorAll('.bot-chip').forEach(b=>b.addEventListener('click',()=>{ inp.value=b.textContent; botResponder(b.textContent); }));
+  chips.querySelectorAll('.bot-chip').forEach(b=>b.addEventListener('click',()=>{ 
+    inp.value=b.textContent; 
+    botResponder(b.textContent); 
+    inp.focus();
+  }));
   
   // BÚSQUEDA EN TIEMPO REAL MIENTRAS EL USUARIO ESCRIBE
   inp.addEventListener('input', (e)=>botResponder(e.target.value));
