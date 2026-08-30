@@ -265,7 +265,7 @@ main{
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
-.panel h2{font-family:var(--font-display);font-weight:500;font-size:20px;margin:0}
+.panel h2{font-family:var(--font-display);font-weight:500;font-size:20px;margin:0;white-space:nowrap;}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
 
 /* REGLAS DE ORO CHECKLIST */
@@ -439,7 +439,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 /* WIZARD ESTILO PASO 1 (DÍA A DÍA) */
 .wiz-brand-logo{width:60%;max-width:200px;height:auto;display:block;margin:0 auto 10px}
 .wiz-steps{list-style:none;margin-bottom:12px;background:var(--surface-2);border-radius:var(--radius-sm);padding:4px 12px;border:1px solid var(--line)}
-.wiz-steps li{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px;border-bottom:1px solid var(--line)}
+.wiz-steps li{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px solid var(--line)}
 .wiz-steps li:last-child{border-bottom:none}
 .wiz-steps .n{width:24px;height:24px;flex:none;border-radius:50%;background:var(--primary-tint);color:var(--primary-strong);font-weight:700;display:grid;place-items:center;font-size:12px}
 
@@ -600,6 +600,47 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
     <section class="view" id="view-recordatorios">
       <div class="panel acc">
         <div class="acc-head">
+          <h2>Recordatorios</h2>
+          <span class="acc-ind"></span>
+        </div>
+        <p class="hint" style="margin-top:10px;">Activá los avisos para recibir un recordatorio en el horario de cada toma.</p>
+        <div class="switch-row">
+          <span class="lbl">Aviso de toma
+            <small id="notifState">Desactivado</small>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="notifToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="switch-row">
+          <span class="lbl">Volver a avisar si no marqué
+            <small id="fuState">Desactivado</small>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="fuToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="time-field" id="fuDelayWrap" style="display:none;margin-top:10px">
+          <label>Volver a avisar después de</label>
+          <select id="fuDelay">
+            <option value="10">10 minutos</option>
+            <option value="15">15 minutos</option>
+            <option value="30">30 minutos</option>
+            <option value="60">1 hora</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Horarios de las tomas</h2>
+        <p class="hint">Ajustá los cuatro horarios según la indicación de tu médico y el prospecto.</p>
+        <div class="times-grid" id="timesGrid"></div>
+      </div>
+
+      <div class="panel acc">
+        <div class="acc-head">
           <h2>Personalizar Colores</h2>
           <span class="acc-ind"></span>
         </div>
@@ -650,47 +691,6 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
       <div class="panel acc">
         <div class="acc-head">
-          <h2>Recordatorios</h2>
-          <span class="acc-ind"></span>
-        </div>
-        <p class="hint" style="margin-top:10px;">Activá los avisos para recibir un recordatorio en el horario de cada toma.</p>
-        <div class="switch-row">
-          <span class="lbl">Aviso de toma
-            <small id="notifState">Desactivado</small>
-          </span>
-          <label class="switch">
-            <input type="checkbox" id="notifToggle">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="switch-row">
-          <span class="lbl">Volver a avisar si no marqué
-            <small id="fuState">Desactivado</small>
-          </span>
-          <label class="switch">
-            <input type="checkbox" id="fuToggle">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="time-field" id="fuDelayWrap" style="display:none;margin-top:10px">
-          <label>Volver a avisar después de</label>
-          <select id="fuDelay">
-            <option value="10">10 minutos</option>
-            <option value="15">15 minutos</option>
-            <option value="30">30 minutos</option>
-            <option value="60">1 hora</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h2>Horarios de las tomas</h2>
-        <p class="hint">Ajustá los cuatro horarios según la indicación de tu médico y el prospecto.</p>
-        <div class="times-grid" id="timesGrid"></div>
-      </div>
-
-      <div class="panel acc">
-        <div class="acc-head">
           <h2>Aviso por WhatsApp</h2>
           <span class="acc-ind"></span>
         </div>
@@ -726,7 +726,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       <div class="panel">
         <h2>Tratamiento</h2>
         <p class="hint" id="startInfo">Comenzado el —</p>
-        <button class="btn btn-danger" id="resetBtn">Reiniciar tratamiento</button>
+        <button class="btn btn-danger" id="resetBtn">🗑️ Eliminar tratamiento</button>
       </div>
     </section>
 
@@ -806,7 +806,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 const PRODUCTO       = "Pylober";
 const TOTAL_DIAS     = 10;
 const TOMAS_POR_DIA  = 4;
-const HORARIOS_DEFAULT = ["08:00","14:00","20:00","02:00"];
+const HORARIOS_DEFAULT = ["09:30","13:00","17:30","21:30"];
 const DEFAULT_BG = "#5a6b5c";
 const DEFAULT_SURFACE = "#ffffff";
 const DEFAULT_CARD_INICIO = "#ffffff";
@@ -926,23 +926,40 @@ function boot(){
 function startNewTreatmentFlow(){
   const taken = {};
   for(let d=1; d<=TOTAL_DIAS; d++) taken[d] = Array(TOMAS_POR_DIA).fill(false);
+  
+  // MANTENER CONFIGURACIONES DE ALERTAS Y COLORES
+  const preservedTimes = state?.times || [...HORARIOS_DEFAULT];
+  const preservedNotifs = state?.notifs ?? false;
+  const preservedWaEnabled = state?.waEnabled ?? false;
+  const preservedWaNumber = state?.waNumber || '';
+  const preservedFollowup = state?.followup ?? false;
+  const preservedFollowupMin = state?.followupMin || FOLLOWUP_MIN_DEFAULT;
+  const preservedVademecumUrl = state?.vademecumUrl || DEFAULT_VADEMECUM;
+  const preservedBgColor = state?.bgColor || DEFAULT_BG;
+  const preservedCardColor = state?.cardColor || DEFAULT_SURFACE;
+  const preservedInicioColor = state?.inicioColor || DEFAULT_CARD_INICIO;
+  const preservedInfoColor = state?.infoColor || DEFAULT_CARD_INFO;
+  const preservedDoseBtnColor = state?.doseBtnColor || DEFAULT_DOSE_BTN_BG;
+  const preservedTabBarColor = state?.tabBarColor || DEFAULT_TAB_BAR_BG;
+  const preservedTopbarColor = state?.topbarColor || DEFAULT_TOPBAR_BG;
   const preservedThemes = state?.savedThemes || [];
+
   state = { 
     startDate: startOfDay(new Date()).toISOString(), 
-    times:[...HORARIOS_DEFAULT], 
-    notifs:false, 
-    waEnabled:false, 
-    waNumber:'', 
-    followup:false, 
-    followupMin:FOLLOWUP_MIN_DEFAULT, 
-    vademecumUrl: DEFAULT_VADEMECUM, 
-    bgColor: DEFAULT_BG,
-    cardColor: DEFAULT_SURFACE,
-    inicioColor: DEFAULT_CARD_INICIO,
-    infoColor: DEFAULT_CARD_INFO,
-    doseBtnColor: DEFAULT_DOSE_BTN_BG,
-    tabBarColor: DEFAULT_TAB_BAR_BG,
-    topbarColor: DEFAULT_TOPBAR_BG,
+    times: preservedTimes, 
+    notifs: preservedNotifs, 
+    waEnabled: preservedWaEnabled, 
+    waNumber: preservedWaNumber, 
+    followup: preservedFollowup, 
+    followupMin: preservedFollowupMin, 
+    vademecumUrl: preservedVademecumUrl, 
+    bgColor: preservedBgColor,
+    cardColor: preservedCardColor,
+    inicioColor: preservedInicioColor,
+    infoColor: preservedInfoColor,
+    doseBtnColor: preservedDoseBtnColor,
+    tabBarColor: preservedTabBarColor,
+    topbarColor: preservedTopbarColor,
     tolerance:{},
     savedThemes: preservedThemes,
     taken 
@@ -970,8 +987,8 @@ function openWizardStep(step){
     nav.style.display = 'none';
     cnt.innerHTML = `
       <img class="wiz-brand-logo" src="pylober-logo.png" alt="Pylober">
-      <h3 style="text-align:center;font-size:24px;margin-bottom:6px;">día a día</h3>
-      <p style="font-size:13px;color:var(--ink-soft);text-align:center;margin-bottom:12px;line-height:1.3;">
+      <h3 style="text-align:center;font-size:24px;margin-bottom:6px;">DÍA A DÍA</h3>
+      <p style="font-size:14px;color:var(--ink-soft);text-align:center;margin-bottom:12px;line-height:1.3;">
         Te acompañamos durante los 10 días con recordatorios en cada toma. Sin registros ni cuentas: empezás y listo.
       </p>
       <ul class="wiz-steps">
@@ -999,8 +1016,8 @@ function openWizardStep(step){
       renderWizTimes();
     } else if(step === 3){
       cnt.innerHTML = `
-        <h3>⏰ <span class="wiz-big-num">3 -</span> Activar recordatorios</h3>
-        <div class="switch-row" style="margin-bottom:10px;">
+        <h3 style="white-space:nowrap;">⏰ <span class="wiz-big-num">3 -</span> Activar recordatorios</h3>
+        <div class="switch-row" style="margin-bottom:10px;margin-top:12px;">
           <span class="lbl">Aviso de toma</span>
           <label class="switch">
             <input type="checkbox" id="wizNotifToggle" ${state.notifs ? 'checked' : ''}>
@@ -1569,11 +1586,8 @@ document.getElementById('waTest').addEventListener('click',()=>{
 });
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  openConfirm('warn','⚠️','Reiniciar tratamiento','¿Querés volver al día 1? Se borra el progreso actual y no se puede deshacer.','Reiniciar', ()=>{
+  openConfirm('warn','🗑️','Eliminar tratamiento','¿Esta seguro? Se eliminará todo el registro del tratamiento y se irá al comienzo.','Eliminar', ()=>{
     if(isNative) cancelAllNative();
-    const preservedThemes = state?.savedThemes || [];
-    store.del(KEY);
-    state = null;
     alerted = new Set();
     startNewTreatmentFlow();
   });
