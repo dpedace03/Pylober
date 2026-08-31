@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <meta name="theme-color" content="#1f7a66">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -265,7 +265,7 @@ main{
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;position:relative;}
-.panel h2{font-family:var(--font-display);font-weight:500;font-size:18px;margin:0;}
+.panel h2{font-family:var(--font-display);font-weight:500;font-size:19px;margin:0;line-height:1.2;white-space:normal;}
 .panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
 
 /* REGLAS DE ORO CHECKLIST */
@@ -275,8 +275,6 @@ main{
 .gold-rule-item span.txt{font-size:14px;font-weight:600;color:var(--ink)}
 
 /* REGISTRO SÍNTOMAS / TOLERANCIA MÚLTIPLE */
-#tolerancePanel .acc-head{gap:8px}
-#tolerancePanel .acc-head h2{font-size:15px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;margin:0}
 .tolerance-options{display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:8px}
 .tolerance-btn{
   background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
@@ -404,7 +402,7 @@ nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
   width:68px;
   height:68px;
   border-radius:50%;
-  background:linear-gradient(135deg, #fdf3c0 0%, #f7e08a 100%);
+  background:linear-gradient(135deg, #12a6a2 0%, #0c7d7a 100%);
   border:3px solid #ffffff;
   box-shadow:0 8px 24px rgba(0,0,0,0.3);
   cursor:pointer;
@@ -830,23 +828,6 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <h2>Vademécum</h2>
         <p class="hint">Información profesional del producto, en el sitio de Laboratorios Bernabó.</p>
         <button class="btn btn-primary" id="vademecumBtn" style="min-height:44px">Abrir Vademécum</button>
-      </div>
-      <div class="panel">
-        <h2>🔒 Política de privacidad</h2>
-        <div style="max-height:320px;overflow:auto;font-size:13px;line-height:1.55;color:var(--ink-soft);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:6px"><b>Política de Privacidad — Pylober</b><br>Última actualización: [completar fecha]<br><br>
-Pylober ("la app") es una herramienta de recordatorio e información sobre el tratamiento, provista por Laboratorios Bernabó S.A. Esta política explica qué datos maneja la app.<br><br>
-<b>1. Datos que maneja.</b> La app funciona sin cuentas ni registro. Lo que ingresás —fecha de inicio, tomas marcadas, registro de tolerancia/síntomas y, si lo cargás, un número para avisos— se guarda únicamente en tu dispositivo. No se envía a Laboratorios Bernabó ni a terceros.<br><br>
-<b>2. Datos de salud.</b> El seguimiento de tomas y el registro de tolerancia son datos sensibles de salud y se almacenan solo en tu teléfono. Podés borrarlos desde la opción de eliminar el tratamiento, o desinstalando la app.<br><br>
-<b>3. Notificaciones.</b> Son locales (se generan en tu dispositivo) y no envían datos a ningún servidor.<br><br>
-<b>4. WhatsApp.</b> Si elegís compartir por WhatsApp, la app abre WhatsApp con un texto que vos enviás manualmente al destinatario que elijas; la app no envía mensajes por su cuenta. Aplica la política de WhatsApp.<br><br>
-<b>5. Enlaces externos.</b> La app puede abrir sitios externos (Laboratorios Bernabó, vademécum) en tu navegador; esos sitios tienen sus propias políticas.<br><br>
-<b>6. Tipografías.</b> La app carga fuentes desde Google Fonts; al hacerlo Google puede recibir la IP de tu dispositivo, según su política.<br><br>
-<b>7. Publicidad y datos.</b> La app no muestra publicidad de terceros ni vende ni comparte tus datos.<br><br>
-<b>8. Menores.</b> La app no está dirigida a menores ni recopila deliberadamente sus datos.<br><br>
-<b>9. Seguridad.</b> Como los datos se guardan localmente, su resguardo depende de la seguridad de tu teléfono.<br><br>
-<b>10. Cambios.</b> Podemos actualizar esta política; la versión vigente estará en la app y en el sitio de Laboratorios Bernabó.<br><br>
-<b>11. Contacto.</b> info@laboratoriosbernabo.com · 0810-555-0111 · Laboratorios Bernabó S.A., [domicilio legal].<br><br>
-<i>Esta app no reemplaza la indicación de tu médico.</i></div>
       </div>
       <div class="section-title" style="margin-top:4px">Preguntas frecuentes</div>
       <div id="faqList"></div>
@@ -1412,16 +1393,17 @@ function renderToleranceUI(day){
 
 document.getElementById('viewToleranceLogBtn').onclick = (e)=>{
   e.stopPropagation();
+  const currentDay = Math.min(todayIndex(), TOTAL_DIAS);
   let text = '<b>Historial de síntomas registrados:</b><br><br>';
-  let count = 0;
-  for(let d=1; d<=TOTAL_DIAS; d++){
+  
+  for(let d=1; d<=currentDay; d++){
     if(state.tolerance && state.tolerance[d] && state.tolerance[d].length > 0){
       const list = state.tolerance[d].map(k=>TOLERANCE_MAP[k]||k).join(', ');
       text += `<b>Día ${d}:</b> ${list}<br>`;
-      count++;
+    } else {
+      text += `<b>Día ${d}:</b> <i>Sin registros</i><br>`;
     }
   }
-  if(count === 0) text += 'Aún no registraste síntomas en lo que va del tratamiento.';
   
   openInlineModal('👁️', 'Ver registro de tolerancia', text);
 };
@@ -1456,10 +1438,7 @@ document.getElementById('viewFullRegisterBtn').onclick = (e)=>{
     </div>`;
   }
 
-  html += '<button id="waFullRegister" type="button" style="display:block;margin:14px auto 0;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer">💬 Enviar por WhatsApp</button>';
-  openInlineModal('📜', 'Registros', html);
-  const _wb=document.getElementById('waFullRegister');
-  if(_wb) _wb.onclick=()=>{ window.open('https://wa.me/?text='+encodeURIComponent(buildFullRegisterText()),'_blank'); };
+  openInlineModal('📜', 'Registro total del tratamiento', html);
 };
 
 function buildSymptomsSummaryText(){
@@ -1474,21 +1453,6 @@ function buildSymptomsSummaryText(){
   }
   if(!hasData) summary += `• No se registraron síntomas ni molestias destacables durante los 10 días. ¡Excelente tolerancia! 🎉\n`;
   return summary;
-}
-
-function buildFullRegisterText(){
-  const currentDay = todayIndex();
-  let t = '📋 Registro del tratamiento Pylober\n\n';
-  for(let d=1; d<=TOTAL_DIAS; d++){
-    if(d > currentDay){ t += `Día ${d}: pendiente\n`; continue; }
-    const takenArr = state.taken[d] || [false,false,false,false];
-    const marcadas = takenArr.filter(Boolean).length;
-    const tolArr = (state.tolerance && state.tolerance[d]) || [];
-    const tol = tolArr.length ? tolArr.map(k=>TOLERANCE_MAP[k]||k).join(', ') : 'sin síntomas registrados';
-    t += `Día ${d}: ${marcadas}/${TOMAS_POR_DIA} tomas · tolerancia: ${tol}\n`;
-  }
-  t += '\nEnviado desde la app Pylober.';
-  return t;
 }
 
 function openFinishCelebrationModal(){
@@ -2007,7 +1971,10 @@ function botResponder(q){
   if(!chips||!inp||!toggleBtn||!popover||!closeBtn) return;
   
   toggleBtn.addEventListener('click', ()=>{ 
-    popover.classList.toggle('open');
+    popover.classList.toggle('open'); 
+    if(popover.classList.contains('open')){
+      setTimeout(() => inp.focus(), 100);
+    }
   });
   
   closeBtn.addEventListener('click', ()=>{ popover.classList.remove('open'); });
@@ -2016,7 +1983,8 @@ function botResponder(q){
   chips.innerHTML=sug.map(x=>'<button class="bot-chip" type="button">'+x+'</button>').join('');
   chips.querySelectorAll('.bot-chip').forEach(b=>b.addEventListener('click',()=>{ 
     inp.value=b.textContent; 
-    botResponder(b.textContent);
+    botResponder(b.textContent); 
+    inp.focus();
   }));
   
   // BÚSQUEDA EN TIEMPO REAL MIENTRAS EL USUARIO ESCRIBE
