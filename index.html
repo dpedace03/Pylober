@@ -670,7 +670,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div id="doseList"></div>
 
         <!-- REGISTRO DE TOLERANCIA / SÍNTOMAS MÚLTIPLE (DENTRO DE CARD) -->
-        <div class="panel acc" id="tolerancePanel" style="margin-top:16px">
+        <div class="panel acc" id="tolerancePanel" style="margin-top:16px;display:none">
           <div class="acc-head">
             <h2>🩺 Registro de tolerancia de hoy</h2>
             <span class="acc-ind"></span>
@@ -744,7 +744,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
             <span class="slider"></span>
           </label>
         </div>
-        <div class="switch-row">
+        <div class="switch-row" style="display:none">
           <span class="lbl">Volver a avisar si no marqué
             <small id="fuState">Desactivado</small>
           </span>
@@ -1609,7 +1609,7 @@ function renderRecordatorios(){
   const fu=document.getElementById('fuToggle');
   fu.checked=!!state.followup;
   document.getElementById('fuState').textContent = state.followup?'Activado':'Desactivado';
-  document.getElementById('fuDelayWrap').style.display = state.followup?'block':'none';
+  document.getElementById('fuDelayWrap').style.display = 'none';
   document.getElementById('fuDelay').value = String(state.followupMin||15);
   fu.onchange=()=>{ state.followup=fu.checked; saveState(); renderRecordatorios(); if(isNative && state.notifs) scheduleNativeNotifications(); };
   document.getElementById('fuDelay').onchange=(e)=>{ state.followupMin=+e.target.value||15; saveState(); if(isNative && state.notifs) scheduleNativeNotifications(); };
