@@ -391,6 +391,21 @@ nav.tabs button[data-tab="hoy"] svg{stroke:var(--primary)}
 nav.tabs button[data-tab="recordatorios"] svg{stroke:#e4572e !important}
 nav.tabs button[data-tab="info"] svg{stroke:#ef9f27 !important}
 nav.tabs button[data-tab="prospecto"] svg{stroke:#a0aec0 !important}
+nav.tabs button[data-tab="prospecto"]{display:none !important}
+
+.anmat-gate{position:fixed;inset:0;z-index:100000;background:rgba(18,53,54,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.anmat-gate[hidden]{display:none}
+.anmat-box{background:var(--surface,#fff);border-radius:18px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.anmat-logo{display:block;width:150px;max-width:60%;height:auto;margin:0 auto 14px}
+.anmat-box h3{text-align:center;font-size:18px;font-weight:700;color:var(--primary-strong,#0c7d7a);margin-bottom:10px;letter-spacing:.04em}
+.anmat-box h4{font-size:15px;font-weight:700;margin:14px 0 6px;color:var(--ink,#123536)}
+.anmat-box p{font-size:12.5px;line-height:1.5;color:var(--ink-soft,#4b6360);margin-bottom:8px}
+.anmat-check{display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:var(--ink,#123536);margin:14px 0;line-height:1.4;cursor:pointer}
+.anmat-check input{margin-top:2px;width:18px;height:18px;flex:none}
+.anmat-actions{display:flex;gap:10px}
+.anmat-actions .btn{flex:1;min-height:46px}
+.anmat-actions .btn[disabled]{opacity:.5;pointer-events:none}
+
 
 .doc-img-container{position:relative;margin-bottom:12px;}
 .doc-img{width:100%;height:auto;border-radius:12px;display:block;box-shadow:0 1px 8px rgba(0,0,0,.10)}
@@ -581,6 +596,27 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 </button>
 
 <!-- FLUJO CONFIGURACIÓN INICIAL (WIZARD DE 5 PASOS) -->
+<div class="anmat-gate" id="anmatGate">
+  <div class="anmat-box">
+    <img src="pylober-logo.png" alt="Pylober" class="anmat-logo">
+    <h3>AVISO IMPORTANTE</h3>
+    <p>Acorde a la legislación y regulaciones vigentes en nuestro país, la comunicación referida a nuestros productos de venta bajo prescripción médica se encuentra alineada a los requerimientos de la Administración Nacional de Medicamentos, Alimentos y Tecnología Médica (ANMAT). La información aquí vertida está exclusivamente destinada a satisfacer las necesidades de los profesionales de la salud para un uso adecuado de los medicamentos y no contiene información promocional.</p>
+    <h4>Términos y Condiciones de Uso</h4>
+    <p>Recomendamos consultar a su médico sobre cualquier tema concerniente a su salud: cuándo tomar el producto, cómo tomarlo y qué hacer en caso de anomalías. Configure la aplicación de Pylober de acuerdo a las indicaciones de su médico.</p>
+    <p>La utilización de esta aplicación es de responsabilidad del usuario. Laboratorios Bernabó y/o el desarrollador de esta aplicación no pueden ser considerados responsables por daños o dificultades surgidas mientras se utiliza esta aplicación.</p>
+    <p><b>Recopilación y uso de información.</b> Para una mejor experiencia, mientras usa nuestro Servicio, podemos solicitarle que nos brinde cierta información personal. La información que solicitamos NO será retenida por nosotros y se almacenará solo en el dispositivo. La aplicación NO utiliza servicios de terceros que puedan recopilar información utilizada para identificarlo.</p>
+    <p><b>Datos de registro.</b> En caso de error en la aplicación, se pueden recopilar datos e información en su dispositivo (datos de registro), como el nombre del dispositivo, la versión del sistema operativo, la configuración de la aplicación, la hora y fecha de uso y otras estadísticas.</p>
+    <p><b>Seguridad.</b> Valoramos su confianza. Nos esforzamos por utilizar medios comercialmente aceptables para proteger su información, pero ningún método de almacenamiento electrónico es 100% seguro, por lo que no podemos garantizar su seguridad absoluta.</p>
+    <p><b>Cambios a esta política.</b> Es posible que actualicemos esta política de vez en cuando. Se recomienda revisar esta sección periódicamente. Los cambios entran en vigencia al publicarse.</p>
+    <p><b>Contáctenos.</b> Si tiene alguna pregunta o sugerencia, no dude en contactarnos.</p>
+    <label class="anmat-check"><input type="checkbox" id="anmatChk"> He comprendido y deseo acceder al sitio Web.</label>
+    <div class="anmat-actions">
+      <button id="anmatCancel" class="btn btn-ghost" type="button">Cancelar</button>
+      <button id="anmatStart" class="btn btn-primary" type="button" disabled>Comenzar</button>
+    </div>
+  </div>
+</div>
+
 <div class="wizard-overlay" id="wizardOverlay">
   <div class="wizard-card">
     <div id="wizardContent"></div>
@@ -621,7 +657,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <div class="trail-labels"><span>Inicio</span><span>Fin</span></div>
         </div>
 
-        <div class="regimen">
+        <div class="regimen" style="display:none">
           <div class="reg-card"><div class="n">3 o 4</div><div class="l">pastillas<br>por toma</div></div>
           <div class="reg-card"><div class="n">4</div><div class="l">tomas<br>por día</div></div>
           <div class="reg-card"><div class="n">10</div><div class="l">días de<br>tratamiento</div></div>
@@ -664,6 +700,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
             <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
             <div class="gold-rule-item"><span class="ico">🚫🥛</span><span class="txt">Evitar lácteos junto con la toma de Pylober</span></div>
             <div class="gold-rule-item"><span class="ico">🚫🍷</span><span class="txt">No consumir bebidas alcohólicas</span></div>
+            <div class="gold-rule-item"><span class="ico">☀️</span><span class="txt">Evitar la exposición solar; usar protector solar y ropa adecuada</span></div>
           </div>
         </div>
       </div>
@@ -733,7 +770,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         <div class="times-grid" id="timesGrid"></div>
       </div>
 
-      <div class="panel acc">
+      <div class="panel acc" style="display:none">
         <div class="acc-head">
           <h2>Personalizar Colores</h2>
           <span class="acc-ind"></span>
@@ -807,7 +844,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         </div>
       </div>
 
-      <div class="panel acc">
+      <div class="panel acc" style="display:none">
         <div class="acc-head">
           <h2>Enlace al Vademécum</h2>
           <span class="acc-ind"></span>
@@ -820,16 +857,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       <div class="panel">
         <h2>Tratamiento</h2>
         <p class="hint" id="startInfo">Comenzado el —</p>
-        <button class="btn btn-danger" id="resetBtn">🗑️ Eliminar tratamiento</button>
-      </div>
-    </section>
-
-    <!-- INFO -->
-    <section class="view" id="view-info">
-      <div class="panel">
-        <h2>Vademécum</h2>
-        <p class="hint">Información profesional del producto, en el sitio de Laboratorios Bernabó.</p>
-        <button class="btn btn-primary" id="vademecumBtn" style="min-height:44px">Abrir Vademécum</button>
+        <button class="btn btn-danger" id="resetBtn">Volver datos a cero para iniciar tratamiento.</button>
       </div>
       <div class="panel">
         <h2>🔒 Política de privacidad</h2>
@@ -847,6 +875,22 @@ Pylober ("la app") es una herramienta de recordatorio e información sobre el tr
 <b>10. Cambios.</b> Podemos actualizar esta política; la versión vigente estará en la app y en el sitio de Laboratorios Bernabó.<br><br>
 <b>11. Contacto.</b> info@laboratoriosbernabo.com · 0810-555-0111 · Laboratorios Bernabó S.A., [domicilio legal].<br><br>
 <i>Esta app no reemplaza la indicación de tu médico.</i></div>
+      </div>
+    </section>
+
+    <!-- INFO -->
+    <section class="view" id="view-info">
+      <div class="panel" style="display:none">
+        <h2>Vademécum</h2>
+        <p class="hint">Información profesional del producto, en el sitio de Laboratorios Bernabó.</p>
+        <button class="btn btn-primary" id="vademecumBtn" style="min-height:44px">Abrir Vademécum</button>
+      </div>
+      <div class="panel" style="text-align:center">
+        <h2>Seguinos</h2>
+        <p class="hint" style="margin-bottom:10px">Laboratorios Bernabó en Instagram</p>
+        <a href="https://instagram.com/laboratoriosbernabo" target="_blank" rel="noopener" aria-label="Instagram de Laboratorios Bernabó" style="display:inline-flex">
+          <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#e4572e" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.3" fill="#e4572e" stroke="none"/></svg>
+        </a>
       </div>
       <div class="section-title" style="margin-top:4px">Preguntas frecuentes</div>
       <div id="faqList"></div>
@@ -1104,14 +1148,14 @@ function openWizardStep(step){
   const nav = document.getElementById('wizardNav');
 
   wiz.classList.add('show');
-  lbl.textContent = `Paso ${step} de 5`;
+  lbl.textContent = `Paso ${step} de 4`;
   prev.disabled = step === 1;
 
   if(step === 1){
     nav.style.display = 'none';
     cnt.innerHTML = `
       <img class="wiz-brand-logo" src="pylober-logo.png" alt="Pylober">
-      <h3 style="text-align:center;font-size:24px;margin-bottom:6px;">DÍA A DÍA</h3>
+      <h3 style="text-align:center;font-size:17px;margin-bottom:6px;line-height:1.25;">Precisión terapéutica contra el Helicobacter pylori</h3>
       <p style="font-size:14px;color:var(--ink-soft);text-align:center;margin-bottom:12px;line-height:1.3;">
         Te acompañamos durante los 10 días con recordatorios en cada toma. Sin registros ni cuentas: empezás y listo.
       </p>
@@ -1159,31 +1203,9 @@ function openWizardStep(step){
       document.getElementById('wizFuToggle').onchange = (e)=>{ state.followup = e.target.checked; saveState(); };
     } else if(step === 4){
       cnt.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <h3 style="margin:0;">🎨 <span class="wiz-big-num">4 -</span> Colores</h3>
-          <button class="btn-save-sm" id="wizSaveColors">💾 Guardar</button>
-        </div>
-        <p style="font-size:13px;margin-bottom:10px;">Elegí los tonos que mejor se adapten a tu vista:</p>
-        <div class="color-pickers">
-          <div class="color-field"><label>Fondo</label><input type="color" id="wizBg" value="${state.bgColor||DEFAULT_BG}"></div>
-          <div class="color-field"><label>Barra Superior</label><input type="color" id="wizTopbar" value="${state.topbarColor||DEFAULT_TOPBAR_BG}"></div>
-          <div class="color-field"><label>Paneles</label><input type="color" id="wizCard" value="${state.cardColor||DEFAULT_SURFACE}"></div>
-          <div class="color-field"><label>Botones Tomas</label><input type="color" id="wizDose" value="${state.doseBtnColor||DEFAULT_DOSE_BTN_BG}"></div>
-        </div>`;
-      document.getElementById('wizSaveColors').onclick = ()=>{
-        state.bgColor = document.getElementById('wizBg').value;
-        state.topbarColor = document.getElementById('wizTopbar').value;
-        state.cardColor = document.getElementById('wizCard').value;
-        state.doseBtnColor = document.getElementById('wizDose').value;
-        applyColors();
-        saveState();
-        openInfoModal('💾', 'Configuración guardada', 'Los colores se actualizaron correctamente.');
-      };
-    } else if(step === 5){
-      cnt.innerHTML = `
-        <div class="fireworks-box">🎆🎉</div>
-        <h3 class="wiz-large-title">¡Listo! ¡¡Comenzamos!!</h3>
-        <p style="text-align:center;font-size:16px;margin-top:12px;">Todo está preparado para acompañarte durante tus 10 días de tratamiento.</p>`;
+        <div style="text-align:center"><svg viewBox="0 0 120 120" width="118" height="118" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="3" fill="#ef9f27"/><rect x="98" y="15" width="6" height="6" fill="#e4572e" transform="rotate(20 101 18)"/><circle cx="106" cy="40" r="3" fill="#12a6a2"/><rect x="12" y="46" width="6" height="6" fill="#2e7d32" transform="rotate(-15 15 49)"/><path d="M30 62 L14 46" stroke="#2e7d32" stroke-width="6" stroke-linecap="round"/><path d="M90 62 L106 46" stroke="#2e7d32" stroke-width="6" stroke-linecap="round"/><ellipse cx="60" cy="74" rx="34" ry="30" fill="#43b04a"/><circle cx="38" cy="54" r="7" fill="#43b04a"/><circle cx="82" cy="54" r="7" fill="#43b04a"/><circle cx="50" cy="70" r="5" fill="#fff"/><circle cx="70" cy="70" r="5" fill="#fff"/><circle cx="51" cy="71" r="2.5" fill="#123536"/><circle cx="71" cy="71" r="2.5" fill="#123536"/><path d="M48 84 Q60 94 72 84" stroke="#123536" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="42" cy="82" r="4" fill="#ef9f27" opacity="0.45"/><circle cx="78" cy="82" r="4" fill="#ef9f27" opacity="0.45"/></svg></div>
+        <h3 class="wiz-large-title" style="text-align:center">¡Todo listo!</h3>
+        <p style="text-align:center;font-size:16px;margin-top:12px;">Todo está preparado para acompañarte durante tus 10 días de tratamiento. Listos para nuestra misión de ataque. 💪</p>`;
     }
   }
 }
@@ -1211,7 +1233,7 @@ document.getElementById('wizPrev').onclick = ()=>{
 };
 
 document.getElementById('wizNext').onclick = ()=>{
-  if(currentWizStep < 5){
+  if(currentWizStep < 4){
     currentWizStep++;
     openWizardStep(currentWizStep);
   } else {
@@ -1221,6 +1243,19 @@ document.getElementById('wizNext').onclick = ()=>{
     if(btnHoy) btnHoy.click();
   }
 };
+
+(function initAnmatGate(){
+  var g=document.getElementById('anmatGate'), chk=document.getElementById('anmatChk');
+  var start=document.getElementById('anmatStart'), cancel=document.getElementById('anmatCancel');
+  if(!g||!chk||!start||!cancel) return;
+  chk.addEventListener('change', function(){ start.disabled=!chk.checked; });
+  start.addEventListener('click', function(){ if(chk.checked){ g.hidden=true; g.style.display='none'; } });
+  cancel.addEventListener('click', function(){
+    try{ var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App; if(A&&A.exitApp){ A.exitApp(); return; } }catch(e){}
+    try{ navigator.app&&navigator.app.exitApp&&navigator.app.exitApp(); }catch(e){}
+    try{ window.close(); }catch(e){}
+  });
+})();
 
 /* ===== RENDER ===== */
 function renderAll(){
@@ -1300,6 +1335,9 @@ function renderHoy(){
     btn.addEventListener('click', ()=>{
       const i=+btn.dataset.slot;
       const willBeTaken = !state.taken[day][i];
+      if(willBeTaken){
+        for(let j=0;j<i;j++){ if(!state.taken[day][j]){ openInfoModal('⏳','Tomas en orden','Primero marcá las tomas anteriores del día.'); return; } }
+      }
       state.taken[day][i] = willBeTaken;
       
       if(willBeTaken) alerted.add(day+'-'+i);
@@ -1309,8 +1347,8 @@ function renderHoy(){
       const allFourTaken = state.taken[day].every(Boolean);
       const hasToleranceData = state.tolerance && Array.isArray(state.tolerance[day]) && state.tolerance[day].length > 0;
 
-      if(willBeTaken && allFourTaken && !hasToleranceData){
-        promptToleranceRecord(day);
+      if(willBeTaken && allFourTaken && day < TOTAL_DIAS){
+        openInfoModal('💪','¡Un día menos!','Ya estás más cerca del objetivo. ¡Seguí así!');
       }
 
       if(day === TOTAL_DIAS && state.taken[TOTAL_DIAS].every(Boolean)){
@@ -1494,8 +1532,8 @@ function buildFullRegisterText(){
 function openFinishCelebrationModal(){
   box.innerHTML = `
     <div class="m-ico">🎉</div>
-    <h3>¡Felicitaciones! Has cumplido con el tratamiento</h3>
-    <p>Completaste exitosamente tus 10 días de Pylober sin interrumpir. ¡Un gran logro para tu salud digestiva!</p>
+    <h3>¡Felicitaciones! Completaste el tratamiento 🎉</h3>
+    <p>Terminaste tus 10 días de Pylober. Visitá a tu médico para el control final, que confirma la eliminación de la bacteria.</p>
     <div class="celebration-actions" style="grid-template-columns:1fr 1fr;">
       <button class="celebration-btn joy-btn" id="popJoyBtn">🟡 Alegría</button>
       <button class="celebration-btn" id="popTextBtn">✏️ Resumen</button>
