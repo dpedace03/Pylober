@@ -596,7 +596,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 </button>
 
 <!-- FLUJO CONFIGURACIÓN INICIAL (WIZARD DE 5 PASOS) -->
-<div class="anmat-gate" id="anmatGate">
+<div class="anmat-gate" id="anmatGate" hidden>
   <div class="anmat-box">
     <img src="pylober-logo.png" alt="Pylober" class="anmat-logo">
     <h3>AVISO IMPORTANTE</h3>
@@ -1164,6 +1164,7 @@ function openWizardStep(step){
         <li><span class="n">2</span> Te avisamos en el horario de cada toma</li>
         <li><span class="n">3</span> Marcás lo que vas tomando</li>
       </ul>
+      <p style="font-size:12.5px;line-height:1.4;color:var(--ink-soft);background:var(--surface-2);border-radius:10px;padding:10px;margin-bottom:12px;">💊 En el caso de que tu médico te lo recete, no te olvides de tomar 1 IBP con el desayuno y otro con la cena.</p>
       <div class="disclaimer" style="padding:10px;margin-bottom:14px;color:#ffffff;">
         <span class="ico" style="font-size:16px;">ℹ️</span>
         <p style="font-size:11px;line-height:1.3;color:#ffffff;"><strong style="color:#ffffff;">Esta app no reemplaza la indicación de su médico.</strong> Ante cualquier duda, consultá con tu profesional de la salud.</p>
@@ -1192,7 +1193,7 @@ function openWizardStep(step){
             <span class="slider"></span>
           </label>
         </div>
-        <div class="switch-row">
+        <div class="switch-row" style="display:none">
           <span class="lbl">Volver a avisar si no marqué</span>
           <label class="switch">
             <input type="checkbox" id="wizFuToggle" ${state.followup ? 'checked' : ''}>
@@ -1244,17 +1245,27 @@ document.getElementById('wizNext').onclick = ()=>{
   }
 };
 
+function showAnmatGate(){
+  var g=document.getElementById('anmatGate'), chk=document.getElementById('anmatChk'), start=document.getElementById('anmatStart');
+  if(!g) return;
+  if(chk) chk.checked=false;
+  if(start) start.disabled=true;
+  g.hidden=false; g.style.display='';
+}
 (function initAnmatGate(){
   var g=document.getElementById('anmatGate'), chk=document.getElementById('anmatChk');
   var start=document.getElementById('anmatStart'), cancel=document.getElementById('anmatCancel');
   if(!g||!chk||!start||!cancel) return;
   chk.addEventListener('change', function(){ start.disabled=!chk.checked; });
-  start.addEventListener('click', function(){ if(chk.checked){ g.hidden=true; g.style.display='none'; } });
+  start.addEventListener('click', function(){ if(chk.checked){ try{ localStorage.setItem('pylober_anmat_ok','1'); }catch(e){} g.hidden=true; g.style.display='none'; } });
   cancel.addEventListener('click', function(){
     try{ var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App; if(A&&A.exitApp){ A.exitApp(); return; } }catch(e){}
     try{ navigator.app&&navigator.app.exitApp&&navigator.app.exitApp(); }catch(e){}
     try{ window.close(); }catch(e){}
   });
+  var accepted=false;
+  try{ accepted = localStorage.getItem('pylober_anmat_ok')==='1'; }catch(e){}
+  if(!accepted){ g.hidden=false; g.style.display=''; }
 })();
 
 /* ===== RENDER ===== */
@@ -1755,10 +1766,12 @@ document.getElementById('waTest').addEventListener('click',()=>{
 });
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  openConfirm('warn','🗑️','Eliminar tratamiento','¿Esta seguro? Se eliminará todo el registro del tratamiento y se irá al comienzo.','Eliminar', ()=>{
+  openConfirm('warn','','Volver a cero para iniciar tratamiento','¿Está seguro? Se eliminará todo el registro del tratamiento y se irá al comienzo.','Volver a cero', ()=>{
     if(isNative) cancelAllNative();
     alerted = new Set();
+    try{ localStorage.removeItem('pylober_anmat_ok'); }catch(e){}
     startNewTreatmentFlow();
+    showAnmatGate();
   });
 });
 
@@ -1913,7 +1926,7 @@ function openInlineModal(icon,title,html){
 }
 
 function openConfirm(kind,icon,title,html,okLabel,onOk){
-  box.innerHTML=`<div class="m-ico ${kind==='warn'?'warn':''}">${icon}</div><h3>${title}</h3><p>${html}</p>
+  box.innerHTML=`${icon?`<div class="m-ico ${kind==='warn'?'warn':''}">${icon}</div>`:''}<h3>${title}</h3><p>${html}</p>
     <div class="m-actions">
       <button class="btn btn-danger" id="mOk">${okLabel}</button>
       <button class="btn btn-ghost" id="mCancel">Cancelar</button>
