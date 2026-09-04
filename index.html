@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1f7a66">
+<meta name="theme-color" content="#008C95">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Pylober · Mi tratamiento</title>
@@ -658,7 +658,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
         </div>
 
         <div class="regimen" style="display:none">
-          <div class="reg-card"><div class="n">3 o 4</div><div class="l">pastillas<br>por toma</div></div>
+          <div class="reg-card"><div class="n">3 o 4</div><div class="l">cápsulas<br>por toma</div></div>
           <div class="reg-card"><div class="n">4</div><div class="l">tomas<br>por día</div></div>
           <div class="reg-card"><div class="n">10</div><div class="l">días de<br>tratamiento</div></div>
         </div>
@@ -697,7 +697,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           </div>
           <div class="gold-rules">
             <div class="gold-rule-item"><span class="ico">🍲</span><span class="txt">Ingerir las cápsulas siempre con alimentos</span></div>
-            <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP (protector) 30 min antes de las comidas</span></div>
+            <div class="gold-rule-item"><span class="ico">🛡️</span><span class="txt">Tomar el IBP 30 min antes de las comidas</span></div>
             <div class="gold-rule-item"><span class="ico">🚫🥛</span><span class="txt">Evitar lácteos junto con la toma de Pylober</span></div>
             <div class="gold-rule-item"><span class="ico">🚫🍷</span><span class="txt">No consumir bebidas alcohólicas</span></div>
             <div class="gold-rule-item"><span class="ico">☀️</span><span class="txt">Evitar la exposición solar; usar protector solar y ropa adecuada</span></div>
@@ -857,7 +857,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       <div class="panel">
         <h2>Tratamiento</h2>
         <p class="hint" id="startInfo">Comenzado el —</p>
-        <button class="btn btn-danger" id="resetBtn">Volver datos a cero para iniciar tratamiento.</button>
+        <button class="btn btn-danger" id="resetBtn">Volver datos a cero para reiniciar tratamiento.</button>
       </div>
       <div class="panel">
         <h2>🔒 Política de privacidad</h2>
@@ -889,7 +889,7 @@ Pylober ("la app") es una herramienta de recordatorio e información sobre el tr
         <h2>Seguinos</h2>
         <p class="hint" style="margin-bottom:10px">Laboratorios Bernabó en Instagram</p>
         <a href="https://instagram.com/laboratoriosbernabo" target="_blank" rel="noopener" aria-label="Instagram de Laboratorios Bernabó" style="display:inline-flex">
-          <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#e4572e" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.3" fill="#e4572e" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#2E5FA3" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.3" fill="#2E5FA3" stroke="none"/></svg>
         </a>
       </div>
       <div class="section-title" style="margin-top:4px">Preguntas frecuentes</div>
@@ -1160,7 +1160,7 @@ function openWizardStep(step){
         Te acompañamos durante los 10 días con recordatorios en cada toma. Sin registros ni cuentas: empezás y listo.
       </p>
       <ul class="wiz-steps">
-        <li><span class="n">1</span> 4 tomas por día, 3 pastillas cada una</li>
+        <li><span class="n">1</span> 4 tomas por día, 3 cápsulas cada una</li>
         <li><span class="n">2</span> Te avisamos en el horario de cada toma</li>
         <li><span class="n">3</span> Marcás lo que vas tomando</li>
       </ul>
@@ -1333,7 +1333,7 @@ function renderHoy(){
       </div>
       <div class="meta">
         <div class="name">${infoComida.e+' '+infoComida.n}</div>
-        <div class="sub">${totalCaps} pastillas · ${isNext && !isTaken ? 'próxima toma' : 'toma '+(i+1)+' de '+TOMAS_POR_DIA}</div>
+        <div class="sub">${totalCaps} cápsulas · ${isNext && !isTaken ? 'próxima toma' : 'toma '+(i+1)+' de '+TOMAS_POR_DIA}</div>
         <span class="badge ${cls}">${badge}</span>
       </div>
       <button class="check" aria-label="${isTaken?'Desmarcar toma':'Marcar como tomada'}" data-slot="${i}">
@@ -1766,7 +1766,7 @@ document.getElementById('waTest').addEventListener('click',()=>{
 });
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  openConfirm('warn','','Volver a cero para iniciar tratamiento','¿Está seguro? Se eliminará todo el registro del tratamiento y se irá al comienzo.','Volver a cero', ()=>{
+  openConfirm('warn','','Volver a cero para reiniciar tratamiento','¿Está seguro? Se eliminará todo el registro del tratamiento y se irá al comienzo.','Volver a cero', ()=>{
     if(isNative) cancelAllNative();
     alerted = new Set();
     try{ localStorage.removeItem('pylober_anmat_ok'); }catch(e){}
@@ -1778,7 +1778,7 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
 /* ===== FAQ ===== */
 const FAQ = [
   { q:"¿Cómo tomo el tratamiento?",
-    a:`<p>El esquema es siempre el mismo: <b>3 o 4 pastillas por toma según la indicación, 4 veces al día, durante 10 días</b>.</p><p>La app te recuerda cada una de las 4 tomas y vas marcando lo que tomás. Podés ajustar los horarios en Recordatorios.</p>` },
+    a:`<p>El esquema es el mismo durante los 10 días de tratamiento: <b>3 cápsulas 4 veces al día</b>. En la primer y en la última toma se debe acompañar con un IBP.</p><p>La app te recuerda cada una de las 4 tomas y vas marcando lo que tomás. Podés ajustar los horarios en Recordatorios.</p>` },
   { q:"¿Qué hago si me olvido una toma?",
     a:`<div class="placeholder-note"><b>Contenido pendiente</b> de redacción y aprobación por MKT · Médica · AARR. Aquí irá la indicación oficial sobre cómo proceder ante una toma olvidada.</div>` },
   { q:"Advertencias durante el tratamiento",
@@ -1834,7 +1834,7 @@ async function scheduleNativeNotifications(){
         notifs.push({
           id:(d-1)*TOMAS_POR_DIA+i+1,
           title:'Hora de tu toma',
-          body:(TOMA_LABELS[i]?TOMA_LABELS[i].n+' — ':'')+cantPills+' pastillas de '+PRODUCTO,
+          body:(TOMA_LABELS[i]?TOMA_LABELS[i].n+' — ':'')+cantPills+' cápsulas de '+PRODUCTO,
           channelId:'tomas_v2', sound:'alarma_pylober.wav',
           actionTypeId:'pylober_toma', extra:{day:d, slot:i},
           schedule:{ at, allowWhileIdle:true }
@@ -1896,7 +1896,7 @@ function checkDueReminders(){
 function fireReminder(i,t){
   const cantPills = (TOMA_LABELS[i] && TOMA_LABELS[i].extraYellow) ? 4 : 3;
   try{ if('vibrate' in navigator) navigator.vibrate([200,100,200]); }catch(e){}
-  if(sysGranted()){ try{ new Notification('Hora de tu toma', {body:`${cantPills} pastillas — ${PRODUCTO}`, tag:'toma-'+i}); }catch(e){} }
+  if(sysGranted()){ try{ new Notification('Hora de tu toma', {body:`${cantPills} cápsulas — ${PRODUCTO}`, tag:'toma-'+i}); }catch(e){} }
   openDoseReminder(i,t);
 }
 
@@ -1941,7 +1941,7 @@ function openDoseReminder(i,t){
   const cantPills = (TOMA_LABELS[i] && TOMA_LABELS[i].extraYellow) ? 4 : 3;
   const waBtn = (state.waEnabled && state.waNumber) ? `<button class="btn btn-wa" id="mWa">Enviar por WhatsApp</button>` : '';
   box.innerHTML=`<div class="m-ico">💊</div><h3>Es hora de tu toma</h3>
-    <p><b>${t}</b> · ${cantPills} pastillas de ${PRODUCTO}</p>
+    <p><b>${t}</b> · ${cantPills} cápsulas de ${PRODUCTO}</p>
     <div class="m-actions">
       <button class="btn btn-primary" id="mTook">Ya la tomé</button>
       ${waBtn}
@@ -1964,7 +1964,7 @@ function waDigits(){ return (state.waNumber||'').replace(/\D/g,''); }
 function waMessage(t, i){
   const cuando = t ? (t+' hs') : 'ahora';
   const cantPills = (TOMA_LABELS[i] && TOMA_LABELS[i].extraYellow) ? 4 : 3;
-  return `🔔 ${PRODUCTO} · Recordatorio de toma\n${cuando} — ${cantPills} pastillas.\n\nEste aviso no reemplaza la indicación de su médico.`;
+  return `🔔 ${PRODUCTO} · Recordatorio de toma\n${cuando} — ${cantPills} cápsulas.\n\nEste aviso no reemplaza la indicación de su médico.`;
 }
 function openWhatsApp(t, i){
   const num=waDigits();
@@ -2000,7 +2000,7 @@ const PROSPECTO_KB=[
    a:"Cada cápsula contiene Subcitrato de Bismuto Potásico 140 mg, Metronidazol 125 mg y Tetraciclina Clorhidrato 125 mg. Presentación: 120 cápsulas, vía oral."},
   {t:"Duración del tratamiento", k:["cuanto dura","cuantos dias","duracion","tiempo","10 dias","diez dias","termina","cuando termino"],
    a:"El tratamiento con Pylober dura 10 días."},
-  {t:"Cómo se toma", k:["como se toma","como tomar","cuantas veces","cuantas tomas","cuantas pastillas","cuantas capsulas","posologia","veces al dia","desayuno","almuerzo","merienda","cena","horarios"],
+  {t:"Cómo se toma", k:["como se toma","como tomar","cuantas veces","cuantas tomas","cuantas cápsulas","cuantas capsulas","posologia","veces al dia","desayuno","almuerzo","merienda","cena","horarios"],
    a:"Son 4 tomas por día (desayuno, almuerzo, merienda y cena), según la indicación de tu médico. Ingerí siempre las cápsulas con un alimento."},
   {t:"Tomar con comida", k:["comida","alimento","ayunas","comer","estomago vacio","con las comidas"],
    a:"Pylober se ingiere siempre con un alimento; no se toma en ayunas."},
@@ -2026,7 +2026,7 @@ function botResponder(q){
   const ans=document.getElementById('botAns'); if(!ans) return;
   const nq=_norm(q);
   if(!nq.trim()){ ans.innerHTML=''; return; }
-  const STOP=' que cual cuales para con sin los las una uno por del como este esta estas estos tiene tienen puede pueden hay sobre mas muy pylober medicamento cuando donde cuanto pastilla pastillas ';
+  const STOP=' que cual cuales para con sin los las una uno por del como este esta estas estos tiene tienen puede pueden hay sobre mas muy pylober medicamento cuando donde cuanto cápsula cápsulas ';
   const sig=function(w){ return w.length>=3 && STOP.indexOf(' '+w+' ')<0; };
   const qw=nq.split(/[^a-z0-9]+/).filter(sig);
   let best=null, bestScore=0;
