@@ -14,7 +14,7 @@
 
 <style>
 :root{
-  --bg:#5a6b5c; 
+  --bg:#008C95; 
   --surface:#ffffff; 
   --card-inicio:#ffffff;
   --card-info:#f1faf8;
@@ -184,8 +184,8 @@ main{
   display:inline-block;
 }
 .pill-gv{
-  background:linear-gradient(to bottom, #ffffff 50%, #2e7d32 50%);
-  border-color:#1b5e20;
+  background:linear-gradient(to bottom, #ffffff 50%, #008C95 50%);
+  border-color:#006b72;
 }
 .pill-am{
   background:#ffd700;
@@ -584,7 +584,7 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 <button class="bot-floating-btn" id="botToggleBtn" title="Asistente Pylober">
   <svg class="pill-avatar-lg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="25" y="15" width="50" height="70" rx="25" fill="#ffffff" stroke="#12a6a2" stroke-width="4"/>
-    <path d="M25 50 H75 V65 A25 25 0 0 1 25 65 Z" fill="#2e7d32"/>
+    <path d="M25 50 H75 V65 A25 25 0 0 1 25 65 Z" fill="#008C95"/>
     <circle cx="40" cy="35" r="4" fill="#123536"/>
     <circle cx="60" cy="35" r="4" fill="#123536"/>
     <circle cx="41" cy="33" r="1.5" fill="#ffffff"/>
@@ -976,7 +976,7 @@ const PRODUCTO       = "Pylober";
 const TOTAL_DIAS     = 10;
 const TOMAS_POR_DIA  = 4;
 const HORARIOS_DEFAULT = ["09:30","13:00","17:30","21:30"];
-const DEFAULT_BG = "#5a6b5c";
+const DEFAULT_BG = "#008C95";
 const DEFAULT_SURFACE = "#ffffff";
 const DEFAULT_CARD_INICIO = "#ffffff";
 const DEFAULT_CARD_INFO = "#f1faf8";
@@ -1055,7 +1055,7 @@ function boot(){
     if(state.followup===undefined) state.followup=false; 
     if(!state.followupMin) state.followupMin=FOLLOWUP_MIN_DEFAULT; 
     if(!state.vademecumUrl) state.vademecumUrl=DEFAULT_VADEMECUM; 
-    if(!state.bgColor) state.bgColor = DEFAULT_BG;
+    state.bgColor = DEFAULT_BG;
     if(!state.cardColor) state.cardColor = DEFAULT_SURFACE;
     if(!state.inicioColor) state.inicioColor = DEFAULT_CARD_INICIO;
     if(!state.infoColor) state.infoColor = DEFAULT_CARD_INFO;
@@ -1204,9 +1204,7 @@ function openWizardStep(step){
       document.getElementById('wizFuToggle').onchange = (e)=>{ state.followup = e.target.checked; saveState(); };
     } else if(step === 4){
       cnt.innerHTML = `
-        <div style="text-align:center"><svg viewBox="0 0 120 120" width="118" height="118" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="20" r="3" fill="#ef9f27"/><rect x="98" y="15" width="6" height="6" fill="#e4572e" transform="rotate(20 101 18)"/><circle cx="106" cy="40" r="3" fill="#12a6a2"/><rect x="12" y="46" width="6" height="6" fill="#2e7d32" transform="rotate(-15 15 49)"/><path d="M30 62 L14 46" stroke="#2e7d32" stroke-width="6" stroke-linecap="round"/><path d="M90 62 L106 46" stroke="#2e7d32" stroke-width="6" stroke-linecap="round"/><ellipse cx="60" cy="74" rx="34" ry="30" fill="#43b04a"/><circle cx="38" cy="54" r="7" fill="#43b04a"/><circle cx="82" cy="54" r="7" fill="#43b04a"/><circle cx="50" cy="70" r="5" fill="#fff"/><circle cx="70" cy="70" r="5" fill="#fff"/><circle cx="51" cy="71" r="2.5" fill="#123536"/><circle cx="71" cy="71" r="2.5" fill="#123536"/><path d="M48 84 Q60 94 72 84" stroke="#123536" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="42" cy="82" r="4" fill="#ef9f27" opacity="0.45"/><circle cx="78" cy="82" r="4" fill="#ef9f27" opacity="0.45"/></svg></div>
-        <h3 class="wiz-large-title" style="text-align:center">¡Todo listo!</h3>
-        <p style="text-align:center;font-size:16px;margin-top:12px;">Todo está preparado para acompañarte durante tus 10 días de tratamiento. Listos para nuestra misión de ataque. 💪</p>`;
+        <div style="text-align:center"><img src="Todolisto.png" alt="¡Todo listo!" style="max-width:100%;width:100%;height:auto;border-radius:12px"></div>`;
     }
   }
 }
