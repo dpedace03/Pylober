@@ -111,7 +111,7 @@ main{
   padding:20px 18px 18px;margin-bottom:18px;
 }
 .journey .jhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
-.journey .day-count{font-family:var(--font-display);font-size:22px;font-weight:600}
+.journey .day-count{font-family:var(--font-display);font-size:19px;font-weight:600}
 .journey .day-count b{color:var(--primary)}
 .journey .pct{font-size:14px;color:var(--ink-soft);font-weight:600}
 
@@ -152,9 +152,9 @@ main{
 }
 
 .dose{
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;gap:10px;
   background:var(--dose-btn-bg);border:1px solid var(--line);
-  border-radius:var(--radius);padding:16px;margin-bottom:12px;
+  border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;
   box-shadow:var(--shadow);transition:.25s ease;
 }
 .dose.taken{background:var(--surface-2);border-color:var(--primary-tint)}
@@ -164,10 +164,10 @@ main{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  gap:8px;
-  min-width:82px;
+  gap:6px;
+  min-width:64px;
 }
-.dose .time{font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1}
+.dose .time{font-family:var(--font-display);font-weight:600;font-size:22px;line-height:1}
 .dose.taken .time{color:var(--ink-soft)}
 
 .pills-draw{
@@ -176,8 +176,8 @@ main{
   gap:4px;
 }
 .pill-oval{
-  width:10px;
-  height:20px;
+  width:9px;
+  height:17px;
   border-radius:999px;
   border:1px solid #7d8b8e;
   box-shadow:0 1px 2px rgba(0,0,0,0.15);
@@ -219,9 +219,9 @@ main{
   transform:rotate(-135deg);
 }
 
-.dose .meta .name{font-weight:600;font-size:16px}
-.dose .meta .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
-.dose .meta .badge{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+.dose .meta .name{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dose .meta .sub{font-size:12px;color:var(--ink-soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dose .meta .badge{display:inline-block;margin-top:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
 .badge.pending{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line)}
 .badge.duenow{background:var(--amber-tint);color:var(--amber)}
 .badge.done{background:var(--primary-tint);color:var(--primary-strong)}
@@ -265,14 +265,14 @@ main{
 .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
 .panel{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;position:relative;}
-.panel h2{font-family:var(--font-display);font-weight:500;font-size:18px;margin:0;}
-.panel p.hint{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
+.panel h2{font-family:var(--font-display);font-weight:500;font-size:16px;margin:0;}
+.panel p.hint{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px}
 
 /* REGLAS DE ORO CHECKLIST */
-.gold-rules{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.gold-rule-item{display:flex;align-items:center;gap:10px;background:var(--surface-2);padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line)}
-.gold-rule-item span.ico{font-size:20px}
-.gold-rule-item span.txt{font-size:14px;font-weight:600;color:var(--ink)}
+.gold-rules{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.gold-rule-item{display:flex;align-items:center;gap:8px;background:var(--surface-2);padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--line)}
+.gold-rule-item span.ico{font-size:16px;flex:none}
+.gold-rule-item span.txt{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.25}
 
 /* REGISTRO SÍNTOMAS / TOLERANCIA MÚLTIPLE */
 #tolerancePanel .acc-head{gap:8px}
@@ -288,7 +288,7 @@ main{
 .times-grid{
   display:grid;
   grid-template-columns:repeat(2, 1fr);
-  gap:12px;
+  gap:10px;
   width:100%;
   box-sizing:border-box;
   margin-bottom:6px;
@@ -297,12 +297,13 @@ main{
   background:var(--surface-2);
   border:1px solid var(--line);
   border-radius:var(--radius-sm);
-  padding:10px 12px;
+  padding:8px 10px;
   width:100%;
+  min-width:0;
   box-sizing:border-box;
 }
-.time-field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
-.time-field input{border:none;background:transparent;font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--ink);width:100%}
+.time-field label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.time-field input{border:none;background:transparent;font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink);width:100%;min-width:0}
 .time-field input:focus{outline:none}
 
 .color-pickers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -711,17 +712,9 @@ nav.tabs button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
           <h2>¡Completaste el tratamiento! 💪</h2>
           <p>Superaste los 10 días de Pylober sin interrumpir. ¡Felicitaciones por cuidar tu salud!</p>
 
-          <div class="celebration-actions">
-            <button class="celebration-btn joy-btn" id="joySummaryBtn">🟡 Alegría</button>
-            <button class="celebration-btn" id="textSummaryBtn">✏️ Resumen</button>
-            <button class="celebration-btn" id="waSummaryBtn">💬 WhatsApp</button>
-            <button class="celebration-btn" id="calendarReminderBtn">🗓️ Agendar Test</button>
-          </div>
-
           <div class="panel" style="text-align:left;margin-top:20px;background:var(--card-info);">
             <h2 style="font-size:18px;">🗓️ Próximo paso: Test de control</h2>
             <p class="hint" style="margin-bottom:10px;">Para confirmar la eliminación completa de la bacteria, se recomienda realizar un test de control a las 4 semanas.</p>
-            <button class="btn btn-primary" id="addControlReminderBtn" style="min-height:44px;font-size:15px;">Agendar recordatorio en 4 semanas</button>
           </div>
         </div>
       </div>
@@ -1085,7 +1078,7 @@ function boot(){
       }
       if(state.notifs) scheduleNativeNotifications();
     }
-    else { startReminderLoop(); }
+    startReminderLoop();
   }else{
     startNewTreatmentFlow();
   }
@@ -1585,11 +1578,7 @@ function triggerCalendarReminder(){
   openInfoModal('📅', 'Test de Control Agendado', 'Sugerimos agendar una consulta médica para dentro de 4 semanas a partir de hoy para realizar el test de control de la bacteria (aliento o antígeno).');
 }
 
-document.getElementById('joySummaryBtn').onclick = showJoyFriendlySummary;
-document.getElementById('textSummaryBtn').onclick = showPencilTextSummary;
-document.getElementById('waSummaryBtn').onclick = sendSummaryWhatsApp;
-document.getElementById('calendarReminderBtn').onclick = triggerCalendarReminder;
-document.getElementById('addControlReminderBtn').onclick = triggerCalendarReminder;
+/* botones de la pantalla final quitados */
 
 function renderRecordatorios(){
   document.getElementById('bgPicker').value = state.bgColor || DEFAULT_BG;
@@ -1778,13 +1767,21 @@ const FAQ = [
   { q:"¿Cómo tomo el tratamiento?",
     a:`<p>El esquema es el mismo durante los 10 días de tratamiento: <b>3 cápsulas 4 veces al día</b>. En la primer y en la última toma se debe acompañar con un IBP.</p><p>La app te recuerda cada una de las 4 tomas y vas marcando lo que tomás. Podés ajustar los horarios en Recordatorios.</p>` },
   { q:"¿Qué hago si me olvido una toma?",
-    a:`<div class="placeholder-note"><b>Contenido pendiente</b> de redacción y aprobación por MKT · Médica · AARR. Aquí irá la indicación oficial sobre cómo proceder ante una toma olvidada.</div>` },
+    a:`<p>Si no tomó Pylober en el horario indicado, pero lo recuerda dentro de la hora siguiente, tome las 3 cápsulas en ese momento.</p><p>Si ya es casi la hora de la siguiente toma, saltee la dosis olvidada. No tome una dosis doble para compensarla.</p><p>Si olvidó más de 4 tomas consecutivas —un día completo de tratamiento—, consulte con su médico.</p>` },
   { q:"Advertencias durante el tratamiento",
-    a:`<div class="placeholder-note"><b>Contenido pendiente</b> de redacción y aprobación por MKT · Médica · AARR. Aquí irán las advertencias y precauciones a considerar.</div>` },
-  { q:"Sobre la droga",
-    a:`<div class="placeholder-note"><b>Contenido pendiente</b> de redacción y aprobación por MKT · Médica · AARR. Aquí irá la información general sobre la droga.</div>` },
-  { q:"Sobre el tratamiento",
-    a:`<div class="placeholder-note"><b>Contenido pendiente</b> de redacción y aprobación por MKT · Médica · AARR. Aquí irá la información general sobre el tratamiento.</div>` }
+    a:`<ul style="margin:4px 0;padding-left:20px;line-height:1.5">
+<li style="margin-bottom:6px">No consuma alcohol durante el tratamiento ni durante al menos 24 horas después de finalizarlo.</li>
+<li style="margin-bottom:6px">No consuma productos lácteos, como leche o yogur, ni bebidas enriquecidas con calcio al mismo tiempo que Pylober.</li>
+<li style="margin-bottom:6px">Evite tomar Pylober junto con antiácidos o suplementos que contengan calcio, hierro, magnesio o zinc.</li>
+<li style="margin-bottom:6px">Evite la exposición prolongada al sol. Utilice ropa adecuada y protector solar.</li>
+<li style="margin-bottom:6px">Trague las cápsulas enteras con un vaso lleno de agua. No las abra ni las mastique.</li>
+<li style="margin-bottom:6px">Después de tomar las cápsulas, especialmente la dosis nocturna, no se acueste inmediatamente.</li>
+<li style="margin-bottom:0">Se recomienda evitar el tabaco durante el tratamiento.</li>
+</ul>` },
+  { q:"¿Qué es Pylober?",
+    a:`<p>Pylober es un medicamento utilizado para eliminar la bacteria Helicobacter pylori. Cada cápsula contiene subcitrato de bismuto potásico, metronidazol y tetraciclina.</p><p>Estos componentes actúan conjuntamente contra la bacteria. Pylober debe administrarse acompañado de un inhibidor de la bomba de protones (IBP), que disminuye la producción de ácido del estómago y favorece la eficacia del tratamiento.</p>` },
+  { q:"¿Qué hago después de finalizar el tratamiento?",
+    a:`<p>Después de finalizar el tratamiento, deberá realizar una prueba para confirmar la erradicación de Helicobacter pylori. Consulte con su médico para que le explique cuándo y cómo realizarla.</p>` }
 ];
 function renderFaq(){
   const wrap=document.getElementById('faqList'); wrap.innerHTML='';
@@ -1803,9 +1800,9 @@ function renderFaq(){
 /* ===== RECORDATORIOS NATIVOS / LOOP ===== */
 async function createChannelNative(){
   const ln=LN(); if(!ln || !ln.createChannel) return;
-  try{ await ln.createChannel({ id:'tomas_v2', name:'Tomas de Pylober',
+  try{ await ln.createChannel({ id:'tomas_v3', name:'Tomas de Pylober',
     description:'Recordatorios de cada toma', importance:5, visibility:1,
-    sound:'alarma_pylober.wav', vibration:true }); }catch(e){}
+    sound:'voz_pylober.wav', vibration:true }); }catch(e){}
 }
 async function cancelAllNative(){
   const ln=LN(); if(!ln) return;
@@ -1833,7 +1830,7 @@ async function scheduleNativeNotifications(){
           id:(d-1)*TOMAS_POR_DIA+i+1,
           title:'Hora de tu toma',
           body:(TOMA_LABELS[i]?TOMA_LABELS[i].n+' — ':'')+cantPills+' cápsulas de '+PRODUCTO,
-          channelId:'tomas_v2', sound:'alarma_pylober.wav',
+          channelId:'tomas_v3', sound:'voz_pylober.wav',
           actionTypeId:'pylober_toma', extra:{day:d, slot:i},
           schedule:{ at, allowWhileIdle:true }
         });
@@ -1844,7 +1841,7 @@ async function scheduleNativeNotifications(){
               id:5000+(d-1)*TOMAS_POR_DIA+i+1,
               title:'¿Ya tomaste tu dosis?',
               body:'Pasó la hora de '+(TOMA_LABELS[i]?TOMA_LABELS[i].n:'la toma')+'. ¿Ya lo tomaste?',
-              channelId:'tomas_v2', sound:'alarma_pylober.wav',
+              channelId:'tomas_v3', sound:'voz_pylober.wav',
               actionTypeId:'pylober_toma', extra:{day:d, slot:i},
               schedule:{ at:at2, allowWhileIdle:true }
             });
@@ -1859,8 +1856,6 @@ async function scheduleNativeNotifications(){
 
 let loopId = null;
 function startReminderLoop(){
-  if(isNative) return;
-
   if(loopId) clearInterval(loopId);
   checkDueReminders();
   loopId = setInterval(checkDueReminders, 30000);
@@ -1934,6 +1929,23 @@ function openConfirm(kind,icon,title,html,okLabel,onOk){
   box.querySelector('#mOk').onclick=()=>{ closeModal(); onOk(); };
 }
 
+function speakReminder(i){
+  try{
+    var nombre = (TOMA_LABELS[i] && TOMA_LABELS[i].n) ? TOMA_LABELS[i].n.toLowerCase() : '';
+    var txt = 'Es hora de tu toma' + (nombre? (' del '+nombre):'') + '. Recordá tomar tus cápsulas de Pylober.';
+    var P = (window.Capacitor && window.Capacitor.Plugins) ? window.Capacitor.Plugins : null;
+    if(P && P.TextToSpeech && P.TextToSpeech.speak){
+      P.TextToSpeech.speak({ text:txt, lang:'es-ES', rate:1.0 }).catch(function(){});
+      return;
+    }
+    if('speechSynthesis' in window){
+      var u = new SpeechSynthesisUtterance(txt);
+      u.lang = 'es-ES'; u.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+  }catch(e){}
+}
 function openDoseReminder(i,t){
   const day=todayIndex();
   const cantPills = (TOMA_LABELS[i] && TOMA_LABELS[i].extraYellow) ? 4 : 3;
